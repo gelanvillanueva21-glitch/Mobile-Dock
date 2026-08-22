@@ -5,7 +5,7 @@ from typing import Annotated
 
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreate, UserLogin, UserResponse
-from app.services.deps import get_user_repo, get_current_user, DatabaseDependency
+from app.services.deps import get_user_repo, get_current_user
 from app.config.security import verify_password, create_access_token
 from app.database.models.users import User
 
@@ -45,6 +45,13 @@ async def login(
                 detail="Incorrect email or password"
             )
 
+        """
+        This get the token created
+        then stores it inside the cookie
+        so when getting the user's info
+        at the get_current_user it check the
+        access_token.
+        """
         access_token = create_access_token(data={"sub": str(user.id)})
         response.set_cookie(
             key="access_token",

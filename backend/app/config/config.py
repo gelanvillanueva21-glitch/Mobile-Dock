@@ -14,6 +14,8 @@ class AuthSettings(BaseSettings):
 
 
 class Settings(DatabaseSettings, AuthSettings):
+    # This make possible to check the env file
+    # and extract the value
     model_config = SettingsConfigDict(
         env_file=".env",
         extra='ignore'

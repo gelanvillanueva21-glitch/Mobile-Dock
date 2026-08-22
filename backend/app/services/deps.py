@@ -11,6 +11,8 @@ from app.config.config import settings
 from app.database.models.users import User
 
 
+# This avoid us writing Annotated[AsyncSession, Depends(...)] every
+# function at that needs database
 DatabaseDependency = Annotated[AsyncSession, Depends(get_database)]
 
 
@@ -22,6 +24,11 @@ async def get_current_user(
     reqeust: Request,
     db: DatabaseDependency
 ) -> User:
+    """
+    This function check wether the cookie is still
+    exist in the user browser and let us return
+    an info of a user
+    """
     token = reqeust.cookies.get("access_token")
     if not token:
         raise HTTPException(
