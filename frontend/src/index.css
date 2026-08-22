@@ -1,4 +1,6 @@
 
-
+@import "./assets/css/global_style.css";
 @import "tailwindcss";
-
+@import "./assets/css/button.css";
+@import "./assets//css/wallpaper.css";
+@import "./assets/css/dock.css";

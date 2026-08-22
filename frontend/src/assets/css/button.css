@@ -1,0 +1,110 @@
+.primary {
+    @apply inline-flex items-center justify-center
+        h-10 px-4
+        rounded-[10px]
+        bg-white text-black
+        text-sm font-medium
+        transition-all duration-150
+        cursor-pointer select-none
+        hover:bg-zinc-200
+        active:bg-zinc-300
+        focus:outline-none
+        focus-visible:ring-2
+        focus-visible:ring-white/50
+        disabled:bg-zinc-700
+        disabled:text-zinc-500
+        disabled:cursor-not-allowed;
+}
+
+
+.secondary {
+    @apply inline-flex items-center justify-center
+        h-10 px-4
+        rounded-[10px]
+        bg-zinc-800 text-white
+        border border-zinc-700
+        text-sm font-medium
+        transition-all duration-150
+        cursor-pointer select-none
+        hover:bg-zinc-700
+        hover:border-zinc-600
+        active:bg-zinc-600
+        focus:outline-none
+        focus-visible:ring-2
+        focus-visible:ring-white/30
+        disabled:bg-zinc-900
+        disabled:text-zinc-600
+        disabled:border-zinc-800
+        disabled:cursor-not-allowed;
+}
+
+
+.tertiary {
+    @apply inline-flex items-center justify-center
+        h-10 px-3
+        rounded-[10px]
+        bg-transparent text-zinc-400
+        text-sm font-medium
+        transition-all duration-150
+        cursor-pointer select-none
+        hover:bg-zinc-800
+        hover:text-white
+        active:bg-zinc-700
+        focus:outline-none
+        focus-visible:ring-2
+        focus-visible:ring-white/30
+        disabled:text-zinc-700
+        disabled:cursor-not-allowed;
+}
+
+
+.app-icon {
+    border: 1px black solid;
+    @apply
+        flex flex-col items-center
+        gap-2
+        p-2
+        rounded-2xl
+        transition-all duration-150
+        cursor-pointer
+        select-none
+
+        hover:bg-white/10
+        active:scale-95
+
+        focus:outline-none
+        focus-visible:ring-2
+        focus-visible:ring-white/40;
+}
+
+.app-icon-image {
+    
+    @apply
+        w-16 h-16
+        rounded-[18px]
+        overflow-hidden
+        shadow-lg
+
+        transition-all duration-150
+        group-hover:scale-105
+        group-hover:shadow-xl;
+}
+
+.icon-image-content {
+    @apply
+        w-full h-full
+        object-cover
+        pointer-events-none;
+}
+
+.app-title {
+    color: black;
+    @apply
+        max-w-20
+        text-xs
+        font-medium
+        text-center
+        truncate
+        drop-shadow-md;
+}
+
