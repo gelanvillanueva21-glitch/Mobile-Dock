@@ -3,30 +3,30 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: taskflow_db
+    container_name: mobile_dock_db
     environment:
-      POSTGRES_USER: taskflow
-      POSTGRES_PASSWORD: taskflow_secret
-      POSTGRES_DB: taskflow_db
+      POSTGRES_USER: mobile_dock
+      POSTGRES_PASSWORD: dock_secret
+      POSTGRES_DB: mobile_dock_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "1434:5432"
+      - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U taskflow -d taskflow_db"]
+      test: ["CMD-SHELL", "pg_isready -U mobile_dock -d mobile_dock_db"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   backend:
     build: ./backend
-    container_name: taskflow-backend
+    container_name: mobile-dock-backend
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
     environment:
-      - DATABASE_URL=postgresql+asyncpg://taskflow:taskflow_secret@db:5432/taskflow_db
+      - DATABASE_URL=postgresql+asyncpg://mobile_dock:dock_secret@db:5432/mobile_dock_db
     depends_on:
       db:
         condition: service_healthy
@@ -34,7 +34,7 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: taskflow-frontend
+    container_name: mobile-dock-frontend
     ports:
       - "5173:5173"
     volumes:
