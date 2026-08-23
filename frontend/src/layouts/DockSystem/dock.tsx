@@ -1,32 +1,32 @@
 
 
+import { useNavigate } from "react-router-dom";
 import { IconButton } from "../../components/buttons/Icon";
 import profileIcon from "../../assets/icon/profile-svgrepo-com.svg";
 import settingIcon from "../../assets/icon/settings-2-svgrepo-com.svg";
+import homeIcon from "../../assets/icon/home-icon-silhouette-svgrepo-com.svg";
 
 
 export function DockSystem() {
 
-    function appRoute(route: "profile" | "settings") {
-        if (route === "settings") {
-
-        }
-
-        if (route === "profile") {
-
-        }
-    }
+    const navigate = useNavigate();
 
     return (
         <div className="dock-system-container">
             <IconButton 
-                onClick={() => appRoute("profile")}
+                onClick={() => navigate("/profile")}
                 context="Profile"
                 src={profileIcon}
                 alt="Profile"
             />
             <IconButton 
-                onClick={() => appRoute("settings")}
+                onClick={() => navigate("/")}
+                context="Home"
+                src={homeIcon}
+                alt="Home"
+            />
+            <IconButton 
+                onClick={() => navigate("settings")}
                 context="Settings"
                 src={settingIcon}
                 alt="Settings"
