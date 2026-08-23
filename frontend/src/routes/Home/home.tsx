@@ -1,5 +1,5 @@
 import { DockSystem } from "../../layouts/DockSystem/dock";
-import { WallPapers } from "../../utils/wallpaper";
+import { WallPapers } from "../../utilities/wallpaper";
 
 
 
