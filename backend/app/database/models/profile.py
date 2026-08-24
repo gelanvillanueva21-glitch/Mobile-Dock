@@ -14,8 +14,27 @@ class Profile(Base):
         ForeignKey("users.id"),
         unique=True
         )
-    avatar_url: Mapped[str]
-    about_me: Mapped[str]
+    avatar_url: Mapped[str] = mapped_column(
+        String(555),
+        default=None
+    )
+    about_me: Mapped[str] = mapped_column(
+        String(555),
+        default=None
+    )
+    facebook_url: Mapped[str] = mapped_column(
+        String(555),
+        default=None
+    )
+    instagram_url: Mapped[str] = mapped_column(
+        String(555),
+        default=None
+    )
+    linkedin: Mapped[str] = mapped_column(
+        String(555),
+        default=None
+    )
+
 
 
     user: Mapped["User"] = relationship(back_populates="profile")
