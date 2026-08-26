@@ -11,6 +11,8 @@ from typing import Annotated
 from app.config.config import settings
 from app.database.models.users import User
 
+from app.services.profile_service import ProfileService
+from app.services.user_service import UserService
 
 # This avoid us writing Annotated[AsyncSession, Depends(...)] every
 # function at that needs database
@@ -21,8 +23,16 @@ def get_profile_repo(db: DatabaseDependency) -> ProfileRepository:
     return ProfileRepository(db)
 
 
+def get_profile_service(db: DatabaseDependency, profile: ProfileRepository) -> ProfileService:
+    return ProfileService(db, profile)
+
+
 def get_user_repo(db: DatabaseDependency) -> UserRepository:
     return UserRepository(db)
+
+
+def get_user_service(db: DatabaseDependency, user: UserRepository) -> UserService:
+    return UserService(db, user)
 
 
 async def get_current_user(

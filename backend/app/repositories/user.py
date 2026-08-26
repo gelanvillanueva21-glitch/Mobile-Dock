@@ -24,14 +24,13 @@ class UserRepository:
         return result.scalar_one_or_none()
 
 
-    async def create(self, data: UserCreate) -> User:
+    def create(self, data: UserCreate) -> User:
         user = User(
             email=data.email,
             hashed_password=hash_password(data.password),
             full_name=data.full_name
         )
         self.db.add(user)
-        await self.db.commit()
         return user
 
 

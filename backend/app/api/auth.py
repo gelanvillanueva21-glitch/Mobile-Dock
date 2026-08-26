@@ -5,10 +5,11 @@ from typing import Annotated
 
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreate, UserLogin, UserResponse
-from app.services.deps import get_user_repo, get_current_user
+from app.utilities.deps import get_user_repo, get_current_user, get_user_service
 from app.config.security import verify_password, create_access_token
 from app.database.models.users import User
 
+from app.services.user_service import UserService
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -21,15 +22,17 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 )
 async def register(
     data: UserCreate,
-    repo: Annotated[UserRepository, Depends(get_user_repo)]
+    service: Annotated[UserService, Depends(get_user_service)]
 ):
-    existing = await repo.get_by_email(data.email)
-    if existing:
+    try:
+        result = await service.create_account(data)
+        return result
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered"
+            detail="Account email already exist"
         )
-    return await repo.create(data)
+
 
 
 
