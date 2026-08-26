@@ -1,14 +1,10 @@
 
 
-from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Annotated
-
 
 from app.database.models.profile import Profile
 from app.database.models.users import User
-from app.schemas.profile import ProfileResponse
 from app.services.deps import get_current_user
 
 
@@ -19,10 +15,10 @@ class ProfileRepository:
         self.db = db
 
 
-    async def get_profile(self, current_user: Annotated[User, Depends(get_current_user)]):
-        if current_user.profile:
-            return current_user.profile
-        profile = Profile(user_id=current_user.id)
+    async def get_or_create_profile(self, user: User) -> Profile:
+        if user.profile:
+            return user.profile
+        profile = Profile(user_id=user.id)
         self.db.add(profile)
         await self.db.commit()
         await self.db.refresh(profile)
@@ -31,12 +27,30 @@ class ProfileRepository:
 
     async def edit_full_name(
         self, 
-        full_name: str
+        full_name: str,
+        user: User
     ) -> None:
-        pass
+        user.full_name = full_name
 
 
     async def edit_avatar(self, new_avatar_url: str) -> None:
-        pass
+        result = await self.get_profile()
+        result.avatar_url = new_avatar_url
+
+
+    async def edit_social_media_url(
+        self,
+        facebook_url: str | None = None,
+        instagram_url: str | None = None,
+        linkedin_url: str | None = None
+    ) -> None:
+        result = await self.get_profile()
+        if facebook_url:
+            result.facebook_url = facebook_url
+        if instagram_url:
+            result.instagram_url = instagram_url
+        if linkedin_url:
+            result.linkedin = linkedin_url
+
 
 
