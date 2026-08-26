@@ -1,6 +1,5 @@
 
 
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.models.profile import Profile
@@ -15,17 +14,15 @@ class ProfileRepository:
         self.db = db
 
 
-    async def get_or_create_profile(self, user: User) -> Profile:
+    def get_or_create_profile(self, user: User) -> Profile:
         if user.profile:
             return user.profile
         profile = Profile(user_id=user.id)
         self.db.add(profile)
-        await self.db.commit()
-        await self.db.refresh(profile)
         return profile
 
 
-    async def edit_full_name(
+    def edit_full_name(
         self, 
         full_name: str,
         user: User
@@ -33,24 +30,44 @@ class ProfileRepository:
         user.full_name = full_name
 
 
-    async def edit_avatar(self, new_avatar_url: str) -> None:
-        result = await self.get_profile()
-        result.avatar_url = new_avatar_url
-
-
-    async def edit_social_media_url(
-        self,
-        facebook_url: str | None = None,
-        instagram_url: str | None = None,
-        linkedin_url: str | None = None
+    def edit_avatar(
+        self, 
+        new_avatar_url: str,
+        profile: Profile
     ) -> None:
-        result = await self.get_profile()
-        if facebook_url:
-            result.facebook_url = facebook_url
-        if instagram_url:
-            result.instagram_url = instagram_url
-        if linkedin_url:
-            result.linkedin = linkedin_url
+        profile.avatar_url = new_avatar_url
+
+
+    def edit_facebook_url(
+        self, 
+        facebook_url: str,
+        profile: Profile
+        ) -> None:
+        profile.facebook_url = facebook_url
+
+
+    def edit_instagram_url(
+        self,
+        instagram_url: str,
+        profile: Profile
+    ) -> None:
+        profile.instagram_url = instagram_url
+
+
+    def edit_linkedin_url(
+        self,
+        linkedin_url: str,
+        profile: Profile
+    ) -> None:
+        profile.linkedin = linkedin_url
+
+
+    def edit_about_me(
+        self,
+        description: str,
+        profile: Profile
+    ) -> None:
+        profile.about_me = description
 
 
 

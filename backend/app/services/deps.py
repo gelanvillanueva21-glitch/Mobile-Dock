@@ -5,6 +5,7 @@ from jose import jwt, JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.database import get_database
+from app.repositories.profile import ProfileRepository
 from app.repositories.user import UserRepository
 from typing import Annotated
 from app.config.config import settings
@@ -16,7 +17,11 @@ from app.database.models.users import User
 DatabaseDependency = Annotated[AsyncSession, Depends(get_database)]
 
 
-async def get_user_repo(db: DatabaseDependency) -> UserRepository:
+def get_profile_repo(db: DatabaseDependency) -> ProfileRepository:
+    return ProfileRepository(db)
+
+
+def get_user_repo(db: DatabaseDependency) -> UserRepository:
     return UserRepository(db)
 
 
@@ -64,5 +69,10 @@ async def get_current_user(
     return user
 
 
+# A variable dependency to reuse it and not needing writing
+# Annotated everytime it needs this
+ProfileRepoDependency = Annotated[ProfileRepository, Depends(get_profile_repo)]
+UserDependency = Annotated[UserRepository, Depends(get_user_repo)]
+UserRepoDependency = Annotated[User, Depends(get_current_user)]
 
 
