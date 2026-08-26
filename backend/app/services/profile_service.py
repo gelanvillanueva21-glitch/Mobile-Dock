@@ -38,8 +38,8 @@ class ProfileService:
         self,
         social_media: SocialMedia,
         profile_repo: ProfileRepository,
+        profile: Profile
     ) -> None:
-        profile = await self.get_profile()
         if social_media.facebook_url:
             profile_repo.edit_facebook_url(
                 social_media,
@@ -61,11 +61,22 @@ class ProfileService:
     async def edit_avatar(
         self,
         avatar_url: str,
-        profile_repo: ProfileRepository
+        profile_repo: ProfileRepository,
+        profile: Profile
     ) -> None:
-        profile = await self.get_profile()
         profile_repo.edit_avatar(avatar_url, profile)
         await self.db.commit()
+
+
+    async def edit_or_change_description(
+            self,
+            description: str,
+            profile_repo: ProfileRepository,
+            profile: Profile
+    ) -> None:
+        profile_repo.edit_about_me(description, profile)
+        await self.db.commit()
+
 
 
 
