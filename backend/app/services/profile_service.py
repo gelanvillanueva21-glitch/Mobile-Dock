@@ -13,6 +13,7 @@ class ProfileService:
             profile_repo: ProfileRepository
         ):
         self.db = db
+        self.profile_repo = profile_repo
 
 
     async def get_profile(

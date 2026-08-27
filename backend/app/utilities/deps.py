@@ -23,7 +23,10 @@ def get_profile_repo(db: DatabaseDependency) -> ProfileRepository:
     return ProfileRepository(db)
 
 
-def get_profile_service(db: DatabaseDependency, profile: ProfileRepository) -> ProfileService:
+def get_profile_service(
+        db: DatabaseDependency, 
+        profile: Annotated[ProfileRepository, Depends(get_profile_repo)]
+) -> ProfileService:
     return ProfileService(db, profile)
 
 
