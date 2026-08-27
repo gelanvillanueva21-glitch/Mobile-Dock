@@ -1,5 +1,6 @@
 
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.models.profile import Profile
@@ -20,6 +21,15 @@ class ProfileRepository:
         profile = Profile(user_id=user.id)
         self.db.add(profile)
         return profile
+
+
+    async def search_profile(
+        self,
+        profile_name: str,
+        user: User
+    ) -> list[User]:
+        result = await self.db.execute(select(User).where(User.full_name == profile_name))
+        return result.scalars().all()
 
 
     def edit_full_name(

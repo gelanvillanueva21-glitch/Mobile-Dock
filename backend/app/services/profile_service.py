@@ -26,6 +26,28 @@ class ProfileService:
         return result
 
 
+    async def search_profile(
+        self,
+        profile_name: str,
+        user: User
+    ):
+        result = await self.profile_repo.search_profile(profile_name, user)
+        if len(result) == 0:
+            raise ValueError("User not found")
+        outputlist = []
+        for data in result:
+            outputlist.append({
+                "email": data.email,
+                "full_name": data.full_name,
+                "avatar_url": data.profile.avatar_url,
+                "about_me": data.profile.about_me,
+                "facebook_url": data.profile.facebook_url,
+                "instagram_url": data.profile.instagram_url,
+                "linkedin_url": data.profile.linkedin
+            })
+
+
+
     async def change_full_name(
         self,
         full_name: str,

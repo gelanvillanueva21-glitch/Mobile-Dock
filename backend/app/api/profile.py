@@ -119,3 +119,23 @@ async def get_profile(
         )
 
 
+@router.get("/{profile_name}")
+async def search_profile(
+    profile_name: str,
+    user: UserDependency
+):
+    try:
+        pass
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    except Exception:
+        logger.error("Something error at [search profile]")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to fetch user"
+        )
+
+
