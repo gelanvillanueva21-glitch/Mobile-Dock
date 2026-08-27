@@ -82,7 +82,7 @@ async def get_current_user(
 # A variable dependency to reuse it and not needing writing
 # Annotated everytime it needs this
 ProfileRepoDependency = Annotated[ProfileRepository, Depends(get_profile_repo)]
-UserDependency = Annotated[UserRepository, Depends(get_user_repo)]
-UserRepoDependency = Annotated[User, Depends(get_current_user)]
+UserRepoDependency = Annotated[UserRepository, Depends(get_user_repo)]
+UserDependency = Annotated[User, Depends(get_current_user)]
 
 
