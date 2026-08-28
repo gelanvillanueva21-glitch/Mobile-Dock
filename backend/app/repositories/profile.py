@@ -32,8 +32,7 @@ class ProfileRepository:
 
     async def search_profile(
         self,
-        profile_name: str,
-        user: User
+        profile_name: str
     ) -> list[User]:
         result = await self.db.execute(select(User).where(User.full_name == profile_name))
         return result.scalars().all()
@@ -47,44 +46,54 @@ class ProfileRepository:
         user.full_name = full_name
 
 
-    def edit_avatar(
+    async def edit_avatar(
         self, 
         new_avatar_url: str,
-        profile: Profile
-    ) -> None:
-        profile.avatar_url = new_avatar_url
+        user_id: int
+    ) -> bool:
+        data = await self.check_by_id_profile(user_id)
+        data.avatar_url = new_avatar_url
+        return isinstance(data, Profile)
 
 
-    def edit_facebook_url(
+    async def edit_facebook_url(
         self, 
         facebook_url: str,
-        profile: Profile
-        ) -> None:
-        profile.facebook_url = facebook_url
+        user_id: int
+        ) -> bool:
+        data = await self.check_by_id_profile(user_id)
+        data.facebook_url = facebook_url
+        return isinstance(data, Profile)
 
 
-    def edit_instagram_url(
+    async def edit_instagram_url(
         self,
         instagram_url: str,
-        profile: Profile
-    ) -> None:
-        profile.instagram_url = instagram_url
+        user_id: int
+    ) -> bool:
+        data = await self.check_by_id_profile(user_id)
+        data.instagram_url - instagram_url
+        return isinstance(data, Profile)
 
 
-    def edit_linkedin_url(
+    async def edit_linkedin_url(
         self,
-        linkedin_url: str,
-        profile: Profile
-    ) -> None:
-        profile.linkedin = linkedin_url
+        linkedin: str,
+        user_id: int
+    ) -> bool:
+        data = await self.check_by_id_profile(user_id)
+        data.linkedin = linkedin
+        return isinstance(data, Profile)
 
 
-    def edit_about_me(
+    async def edit_about_me(
         self,
         description: str,
-        profile: Profile
-    ) -> None:
-        profile.about_me = description
+        user_id: int
+    ) -> bool:
+        data = await self.check_by_id_profile(user_id)
+        data.about_me = description
+        return isinstance(data, Profile)
 
 
 

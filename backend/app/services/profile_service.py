@@ -39,9 +39,8 @@ class ProfileService:
     async def search_profile(
         self,
         profile_name: str,
-        user: User
     ):
-        result = await self.profile_repo.search_profile(profile_name, user)
+        result = await self.profile_repo.search_profile(profile_name)
         if len(result) == 0:
             raise ValueError("User not found")
         outputlist = []
@@ -75,41 +74,32 @@ class ProfileService:
     async def edit_social_media(
         self,
         social_media: SocialMedia,
-        profile: Profile
+        user_id: int
     ) -> None:
         if social_media.facebook_url:
-            self.profile_repo.edit_facebook_url(
-                social_media,
-                profile
-            )
+            self.profile_repo.edit_facebook_url(social_media, user_id)
         if social_media.instagram_url:
-            self.profile_repo.edit_instagram_url(
-                social_media.instagram_url,
-                profile
-            )
+            self.profile_repo.edit_instagram_url(social_media.instagram_url, user_id)
         if social_media.linkedin_url:
-            self.profile_repo.edit_linkedin_url(
-                social_media.linkedin_url,
-                profile
-            )
+            self.profile_repo.edit_linkedin_url(social_media.linkedin_url, user_id)
         await self.db.commit()
 
 
     async def edit_avatar(
         self,
         avatar_url: str,
-        profile: Profile
+        user_id: int
     ) -> None:
-        self.profile_repo.edit_avatar(avatar_url, profile)
+        self.profile_repo.edit_avatar(avatar_url, user_id)
         await self.db.commit()
 
 
     async def edit_or_change_description(
             self,
             description: str,
-            profile: Profile
+            user_id: int
     ) -> None:
-        self.profile_repo.edit_about_me(description, profile)
+        await self.profile_repo.edit_about_me(description, user_id)
         await self.db.commit()
 
 

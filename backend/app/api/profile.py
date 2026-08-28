@@ -43,11 +43,11 @@ async def edit_name(
 @router.post("/edit_social")
 async def edit_social_media(
     social_media: SocialMedia,
-    profile: ProfileRepoDependency,
-    profile_service: Annotated[ProfileService, Depends(get_profile_service)]
+    profile_service: Annotated[ProfileService, Depends(get_profile_service)],
+    user: UserDependency
 ):
     try:
-        result = await profile_service.edit_social_media(social_media, profile)
+        await profile_service.edit_social_media(social_media, user.id)
         return {"status": "success",}
     except Exception:
         logger.error("Something wrong")
@@ -81,10 +81,11 @@ async def edit_avatar(
 async def edit_aboute_me(
     description: str,
     profile_service: Annotated[ProfileService, Depends(get_profile_service)],
-    profile: ProfileRepoDependency
+    profile: ProfileRepoDependency,
+    user: UserDependency
 ):
     try:
-        await profile_service.edit_or_change_description(description, profile)
+        await profile_service.edit_or_change_description(description, profile, user.id)
         return { "status": "success" }
     except Exception:
         logger.error("Something wrong at [Edit about me router]")
@@ -119,16 +120,15 @@ async def search_profile(
     profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
-        result = await profile_service.search_profile(profile_name, user)
-        print(result)
+        result = await profile_service.search_profile(profile_name)
         return result
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found"
         )
-    except Exception:
-        logger.error("Something error at [search profile]")
+    except Exception as e:
+        logger.exception(f"Error at [get Profile]: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to fetch user"
