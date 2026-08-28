@@ -34,8 +34,11 @@ def get_user_repo(db: DatabaseDependency) -> UserRepository:
     return UserRepository(db)
 
 
-def get_user_service(db: DatabaseDependency, user: UserRepository) -> UserService:
-    return UserService(db, user)
+def get_user_service(
+        db: DatabaseDependency,
+        user_repo: Annotated[UserRepository, Depends(get_user_repo)]
+    ) -> UserService:
+    return UserService(db, user_repo)
 
 
 async def get_current_user(

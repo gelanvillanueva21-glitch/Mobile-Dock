@@ -32,6 +32,11 @@ async def register(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Account email already exist"
         )
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Failed to create account"
+        )
 
 
 
@@ -74,8 +79,11 @@ async def logout(response: Response):
     return {"message": "Logout successful"}
 
 
+
 @router.get("/me", response_model=UserResponse)
 async def get_current_me(current_user: Annotated[User, Depends(get_current_user)]):
     return current_user
+
+
 
 

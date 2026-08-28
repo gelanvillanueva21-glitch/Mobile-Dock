@@ -19,11 +19,22 @@ class ProfileService:
     async def get_profile(
         self, 
         user: User
-    ) -> Profile:
-        result = self.profile_repo.get_or_create_profile(user)
+    ):
+        profile = self.profile_repo.get_or_create_profile(user)
         await self.db.commit()
-        await self.db.refresh(result)
-        return result
+        await self.db.refresh(profile)
+        print("return profile") 
+        return {
+            "email": user.email,
+            "full_name": user.full_name,
+            "avatar_url": profile.avatar_url,
+            "about_me": profile.about_me,
+            "social_media": {
+                "facebook_url": profile.facebook_url,
+                "instagram_url": profile.instagram_url,
+                "linkedin_url": profile.linkedin
+            }
+        }
 
 
     async def search_profile(

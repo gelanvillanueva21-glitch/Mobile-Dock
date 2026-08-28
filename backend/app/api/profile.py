@@ -95,22 +95,14 @@ async def edit_aboute_me(
 
 
 
-@router.get("", response_model=ProfileResponse)
+@router.get("")
 async def get_profile(
     user: UserDependency,
     profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
         result = await profile_service.get_profile(user)
-        return {
-            "email": user.email,
-            "full_name": user.full_name,
-            "avatar_url": result.avatar_url,
-            "about_me": result.about_me,
-            "facebook_url": result.facebook_url,
-            "instagram_url": result.instagram_url,
-            "linkedin_url": result.linkedin
-        }
+        return result
     except Exception:
         logger.error("Something error at [get Profile]")
         raise HTTPException(
@@ -122,10 +114,13 @@ async def get_profile(
 @router.get("/{profile_name}")
 async def search_profile(
     profile_name: str,
-    user: UserDependency
+    user: UserDependency,
+    profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
-        pass
+        result = await profile_service.search_profile(profile_name, user)
+        print(result)
+        return result
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

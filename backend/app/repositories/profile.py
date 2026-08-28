@@ -16,6 +16,7 @@ class ProfileRepository:
 
 
     def get_or_create_profile(self, user: User) -> Profile:
+        print("Create profile function execute")
         if user.profile:
             return user.profile
         profile = Profile(user_id=user.id)
