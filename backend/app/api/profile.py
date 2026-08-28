@@ -101,10 +101,11 @@ async def get_profile(
     profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
+        print("Profile")
         result = await profile_service.get_profile(user)
         return result
-    except Exception:
-        logger.error("Something error at [get Profile]")
+    except Exception as e:
+        logger.exception(f"Error at [get Profile]: {e}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to fetch profile"

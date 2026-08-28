@@ -20,9 +20,8 @@ class ProfileService:
         self, 
         user: User
     ):
-        profile = self.profile_repo.get_or_create_profile(user)
+        profile = await self.profile_repo.get_or_create_profile(user)
         await self.db.commit()
-        await self.db.refresh(profile)
         print("return profile") 
         return {
             "email": user.email,
@@ -52,10 +51,13 @@ class ProfileService:
                 "full_name": data.full_name,
                 "avatar_url": data.profile.avatar_url,
                 "about_me": data.profile.about_me,
-                "facebook_url": data.profile.facebook_url,
-                "instagram_url": data.profile.instagram_url,
-                "linkedin_url": data.profile.linkedin
+                "social_media": {
+                    "facebook_url": data.profile.facebook_url,
+                    "instagram_url": data.profile.instagram_url,
+                    "linkedin_url": data.profile.linkedin
+                }
             })
+        return outputlist
 
 
 

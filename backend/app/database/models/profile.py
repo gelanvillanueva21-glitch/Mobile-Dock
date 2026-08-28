@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy import String, DateTime, func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
+from app.database.models.users import User
 
 
 class Profile(Base):
@@ -14,29 +15,37 @@ class Profile(Base):
         ForeignKey("users.id"),
         unique=True
         )
-    avatar_url: Mapped[str] = mapped_column(
+    avatar_url: Mapped[str | None] = mapped_column(
         String(555),
-        default=None
+        default=None,
+        nullable=True
     )
-    about_me: Mapped[str] = mapped_column(
+    about_me: Mapped[str | None] = mapped_column(
         String(555),
-        default=None
+        default=None,
+        nullable=True
     )
-    facebook_url: Mapped[str] = mapped_column(
+    facebook_url: Mapped[str | None] = mapped_column(
         String(555),
-        default=None
+        default=None,
+        nullable=True
     )
-    instagram_url: Mapped[str] = mapped_column(
+    instagram_url: Mapped[str | None] = mapped_column(
         String(555),
-        default=None
+        default=None,
+        nullable=True
     )
-    linkedin: Mapped[str] = mapped_column(
+    linkedin: Mapped[str | None] = mapped_column(
         String(555),
-        default=None
+        default=None,
+        nullable=True
     )
 
 
 
-    user: Mapped["User"] = relationship(back_populates="profile")
+    user: Mapped["User"] = relationship(
+        "User",
+        back_populates="profile"
+    )
 
 

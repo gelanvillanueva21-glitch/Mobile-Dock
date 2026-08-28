@@ -29,7 +29,10 @@ class User(Base):
     )
 
 
-    profile: Mapped["Profile"] = relationship(back_populates="user")
+    profile: Mapped["Profile"] = relationship(
+        "Profile",
+        back_populates="user"
+    )
 
 
 

@@ -15,13 +15,19 @@ class ProfileRepository:
         self.db = db
 
 
-    def get_or_create_profile(self, user: User) -> Profile:
-        print("Create profile function execute")
-        if user.profile:
-            return user.profile
-        profile = Profile(user_id=user.id)
-        self.db.add(profile)
+    async def check_by_id_profile(self, user_id: int) -> Profile:
+        data = await self.db.execute(select(Profile).where(Profile.user_id == user_id))
+        return data.scalar_one_or_none()
+
+
+    async def get_or_create_profile(self, user: User) -> Profile:
+        profile = await self.check_by_id_profile(user.id)
+        print(profile)
+        if not profile:
+            profile = Profile(user_id=user.id)
+            self.db.add(profile)
         return profile
+
 
 
     async def search_profile(
