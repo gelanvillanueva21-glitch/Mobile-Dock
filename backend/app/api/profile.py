@@ -62,11 +62,11 @@ async def edit_social_media(
 async def edit_avatar(
     avatar: Annotated[UploadFile, File(...)],
     profile_service: Annotated[ProfileService, Depends(get_profile_service)],
-    profile: ProfileRepoDependency
+    user: UserDependency
 ):
     try:
         avatar_url = save_avatar_file(avatar)
-        await profile_service.edit_avatar(avatar_url, profile)
+        await profile_service.edit_avatar(avatar_url, user.id)
         return { "status": "success" }
     except Exception:
         logger.error("Something wrong")
@@ -85,7 +85,8 @@ async def edit_aboute_me(
     user: UserDependency
 ):
     try:
-        await profile_service.edit_or_change_description(description, profile, user.id)
+        print("Router")
+        await profile_service.edit_or_change_description(description, user.id)
         return { "status": "success" }
     except Exception:
         logger.error("Something wrong at [Edit about me router]")

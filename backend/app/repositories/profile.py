@@ -50,50 +50,46 @@ class ProfileRepository:
         self, 
         new_avatar_url: str,
         user_id: int
-    ) -> bool:
+    ) -> None:
         data = await self.check_by_id_profile(user_id)
         data.avatar_url = new_avatar_url
-        return isinstance(data, Profile)
 
 
     async def edit_facebook_url(
         self, 
         facebook_url: str,
         user_id: int
-        ) -> bool:
+    ) -> None:
         data = await self.check_by_id_profile(user_id)
         data.facebook_url = facebook_url
-        return isinstance(data, Profile)
+
 
 
     async def edit_instagram_url(
         self,
         instagram_url: str,
         user_id: int
-    ) -> bool:
+    ) -> None:
         data = await self.check_by_id_profile(user_id)
-        data.instagram_url - instagram_url
-        return isinstance(data, Profile)
+        data.instagram_url = instagram_url
 
 
     async def edit_linkedin_url(
         self,
         linkedin: str,
         user_id: int
-    ) -> bool:
+    ) -> None:
         data = await self.check_by_id_profile(user_id)
         data.linkedin = linkedin
-        return isinstance(data, Profile)
 
 
     async def edit_about_me(
         self,
         description: str,
         user_id: int
-    ) -> bool:
+    ) -> None:
         data = await self.check_by_id_profile(user_id)
         data.about_me = description
-        return isinstance(data, Profile)
 
 
 

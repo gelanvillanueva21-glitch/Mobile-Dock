@@ -4,6 +4,7 @@ from datetime import datetime
 from sqlalchemy import String, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.database import Base
+from app.database.models.profile import Profile
 
 
 class User(Base):

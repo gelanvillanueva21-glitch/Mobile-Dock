@@ -77,11 +77,11 @@ class ProfileService:
         user_id: int
     ) -> None:
         if social_media.facebook_url:
-            self.profile_repo.edit_facebook_url(social_media, user_id)
+            await self.profile_repo.edit_facebook_url(social_media.facebook_url, user_id)
         if social_media.instagram_url:
-            self.profile_repo.edit_instagram_url(social_media.instagram_url, user_id)
+            await self.profile_repo.edit_instagram_url(social_media.instagram_url, user_id)
         if social_media.linkedin_url:
-            self.profile_repo.edit_linkedin_url(social_media.linkedin_url, user_id)
+            await self.profile_repo.edit_linkedin_url(social_media.linkedin_url, user_id)
         await self.db.commit()
 
 
@@ -99,6 +99,7 @@ class ProfileService:
             description: str,
             user_id: int
     ) -> None:
+        print("Service")
         await self.profile_repo.edit_about_me(description, user_id)
         await self.db.commit()
 
