@@ -3,8 +3,11 @@
 from datetime import datetime
 from sqlalchemy import String, DateTime, func, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 from app.database.database import Base
-from app.database.models.users import User
+
+if TYPE_CHECKING:
+    from app.database.models.users import User
 
 
 class Profile(Base):

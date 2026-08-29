@@ -90,7 +90,7 @@ class ProfileService:
         avatar_url: str,
         user_id: int
     ) -> None:
-        self.profile_repo.edit_avatar(avatar_url, user_id)
+        await self.profile_repo.edit_avatar(avatar_url, user_id)
         await self.db.commit()
 
 

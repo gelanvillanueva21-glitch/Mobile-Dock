@@ -2,6 +2,7 @@
 
 import logging
 from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
+from fastapi.staticfiles import StaticFiles
 from typing import Annotated
 from pydantic import Field
 
@@ -65,7 +66,9 @@ async def edit_avatar(
     user: UserDependency
 ):
     try:
+        print("Hello world!")
         avatar_url = save_avatar_file(avatar)
+        print(avatar_url)
         await profile_service.edit_avatar(avatar_url, user.id)
         return { "status": "success" }
     except Exception:
@@ -134,5 +137,9 @@ async def search_profile(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to fetch user"
         )
+
+
+
+router.mount("/avatars", StaticFiles(directory="/data"), name="avatars")
 
 

@@ -15,14 +15,14 @@ def save_avatar_file(avatar_file):
         random_string = secrets.token_hex(6)
         file_path = DATA_URL / f"{random_string}{extension}"
 
-        if not file_path.exists:
+        if not file_path.exists():
             break
 
-    with open(file_path, "wb") as file:
-        shutil.copyfileobj(avatar_file.file, file)
-    return file_path
-
-
-
+    try:
+        with open(file_path, "wb") as file:
+            shutil.copyfileobj(avatar_file.file, file)
+    except Exception:
+        raise ValueError()
+    return str(file_path)
 
 
