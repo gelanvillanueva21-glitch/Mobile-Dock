@@ -140,6 +140,5 @@ async def search_profile(
 
 
 
-router.mount("/avatars", StaticFiles(directory="/data"), name="avatars")
-
+# router.mount("/avatars", StaticFiles(directory="/data"), name="avatars")
 

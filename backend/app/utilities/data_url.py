@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def save_avatar_file(avatar_file):
-    DATA_URL = Path("../data")
+    DATA_URL = Path("/data")
     DATA_URL.mkdir(parents=True, exist_ok=True)
     extension = Path(avatar_file.filename).suffix.lower()
 
