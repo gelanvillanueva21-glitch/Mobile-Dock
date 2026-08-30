@@ -120,7 +120,6 @@ async def get_profile(
 @router.get("/{profile_name}")
 async def search_profile(
     profile_name: str,
-    user: UserDependency,
     profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
@@ -140,5 +139,5 @@ async def search_profile(
 
 
 
-# router.mount("/avatars", StaticFiles(directory="/data"), name="avatars")
+router.mount("/avatars", StaticFiles(directory="/app/app/data"), name="avatars")
 

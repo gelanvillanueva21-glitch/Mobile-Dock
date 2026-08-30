@@ -13,16 +13,19 @@ export function SearchUser() {
     const [searchUser, setSearchUser] = useState("");
     const [profile, setProfile] = useState<ProfileInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
 
     useEffect(() => {
+        if (!searchUser.trim()) {
+            setProfile([]);
+            setIsLoading(false);
+            return;
+        }
+        
         const profileFetch = async () => {
             try {
                 const data = await searchProfile(searchUser);
                 setProfile(data);
-            } catch {
-                setError("Failed to fetch users info")
             } finally {
                 setIsLoading(false);
             }
@@ -42,13 +45,13 @@ export function SearchUser() {
 
             {
                 <div>
-                    {error ?  (
-                        <h2 className="error-message-search-user">{error}</h2>
+                    {profile.length === 0 && searchUser.trim() !== "" ?  (
+                        <h2 className="error-message-search-user">Users not found.</h2>
                     ) : (
                         isLoading ? (
                             <ul className="skeleton-loading-state">
                                 {[1, 2, 3].map((i) => (
-                                    <li
+                                    <li 
                                         key={i}
                                         className="content-loading-state"
                                     >
@@ -57,22 +60,24 @@ export function SearchUser() {
                                     </li>
                                 ))}
                             </ul>
-                        ) : profile.length === 0 ? (
-                            <p className="user-not-found">No users found, does not exist.</p>
                         ) : (
                             <ul>
-                                {profile.map((prof) => (
-                                    <li
-                                        key={prof.id}
-                                        className="users-content"
-                                    >
-                                            <UsersOutPut 
-                                                profile={prof.avatar_url}
-                                                fullName={prof.full_name}
-                                                description={prof.about_me}
-                                            />
-                                    </li>
-                                ))}
+                                {searchUser.length === 0 ? (
+                                    <li></li>
+                                ) : (
+                                    profile.map((prof) => (
+                                        <li
+                                            key={prof.id}
+                                            className="users-content"
+                                        >
+                                                <UsersOutPut 
+                                                    profile={`http://127.0.0.1:8000/avatars/${prof.avatar_url}`}
+                                                    fullName={prof.full_name}
+                                                    description={prof.about_me}
+                                                />
+                                        </li>
+                                    ))
+                                )}
                             </ul>
                         )
                     )}

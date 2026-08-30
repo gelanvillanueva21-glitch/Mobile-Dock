@@ -43,18 +43,20 @@ class ProfileService:
         result = await self.profile_repo.search_profile(profile_name)
         if len(result) == 0:
             raise ValueError("User not found")
+        
         outputlist = []
         for data in result:
+            profile = await self.profile_repo.check_by_id_profile(data.id)
             outputlist.append({
                 "id": data.id,
                 "email": data.email,
                 "full_name": data.full_name,
-                "avatar_url": data.profile.avatar_url,
-                "about_me": data.profile.about_me,
+                "avatar_url": profile.avatar_url,
+                "about_me": profile.about_me,
                 "social_media": {
-                    "facebook_url": data.profile.facebook_url,
-                    "instagram_url": data.profile.instagram_url,
-                    "linkedin_url": data.profile.linkedin
+                    "facebook_url": profile.facebook_url,
+                    "instagram_url": profile.instagram_url,
+                    "linkedin_url": profile.linkedin
                 }
             })
         return outputlist
