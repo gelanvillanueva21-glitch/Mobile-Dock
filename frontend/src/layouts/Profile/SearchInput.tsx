@@ -13,6 +13,7 @@ export function SearchUser() {
     const [searchUser, setSearchUser] = useState("");
     const [profile, setProfile] = useState<ProfileInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [showResult, setShowResult] = useState(false);
 
 
     useEffect(() => {
@@ -38,47 +39,51 @@ export function SearchUser() {
         <div className="search-output-input">
             <input 
                 type="text" 
-                onChange={(e) => setSearchUser(e.target.value)}
-                placeholder="Gelan Mar"
+                onChange={(e) => {
+                    setSearchUser(e.target.value)
+                    setShowResult(e.target.value.trim() !== "")
+                }}
+                placeholder="Search..."
                 className="search-user-input"
             />
 
             {
-                <div>
+                <div className="result-container">
                     {profile.length === 0 && searchUser.trim() !== "" ?  (
                         <h2 className="error-message-search-user">Users not found.</h2>
                     ) : (
                         isLoading ? (
-                            <ul className="skeleton-loading-state">
-                                {[1, 2, 3].map((i) => (
-                                    <li 
-                                        key={i}
-                                        className="content-loading-state"
-                                    >
-                                        <div className="profile-loading-state"/>
-                                        <div className="description-loading-state"/>
-                                    </li>
-                                ))}
-                            </ul>
+                            <div className="skeleton-box-state">
+                                <ul className="skeleton-loading-state">
+                                    {[1, 2, 3].map((i) => (
+                                        <li 
+                                            key={i}
+                                            className="content-loading-state"
+                                        >
+                                            <div className="profile-loading-state"/>
+                                            <div className="description-loading-state"/>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         ) : (
-                            <ul>
-                                {searchUser.length === 0 ? (
-                                    <li></li>
-                                ) : (
-                                    profile.map((prof) => (
+                            <div className={showResult? "search-result-box visible" : "search-result-box"}>
+                                <ul className={showResult? "search-result-output visible" : "search-result-output"}>
+                                    {profile.length > 0 && 
+                                        (profile.map((prof) => (
                                         <li
                                             key={prof.id}
                                             className="users-content"
                                         >
-                                                <UsersOutPut 
-                                                    profile={`http://127.0.0.1:8000/avatars/${prof.avatar_url}`}
-                                                    fullName={prof.full_name? prof.full_name : "guest"}
-                                                    description={prof.about_me}
+                                            <UsersOutPut
+                                            profile={`http://127.0.0.1:8000/avatars/${prof.avatar_url}`}
+                                            fullName={prof.full_name? prof.full_name : "guest"}
+                                            description={prof.about_me}
                                                 />
                                         </li> 
-                                    ))
-                                )}
-                            </ul>
+                                    )))}
+                                </ul>
+                            </div>
                         )
                     )}
                 </div>

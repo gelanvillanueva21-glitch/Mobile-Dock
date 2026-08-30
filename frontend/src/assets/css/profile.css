@@ -1,181 +1,19 @@
 
 
-
-
-.search-output-input {
-    @apply
-        relative
-        w-full;
-}
-
-.search-results {
-    @apply
-        absolute
-        top-full
-        left-0
-        z-50
-        w-full
-        mt-2
-        max-h-64
-        overflow-y-auto
-        p-2
-        rounded-xl
-        bg-zinc-950/95
-        border border-zinc-800
-        shadow-2xl
-        backdrop-blur-md;
-}
-
-/* Search input */
-.search-user-input {
-    @apply
-        w-full
-        h-10
-        px-4
-        rounded-xl
-        bg-zinc-900
-        border border-zinc-800
-        text-sm text-white
-        placeholder:text-zinc-600
-        outline-none
-        transition-all duration-150
-
-        focus:border-zinc-600
-        focus:ring-2
-        focus:ring-white/10;
-}
-
-/* Error */
-.error-message-search-user {
-    @apply
-        px-3 py-2
-        text-sm
-        font-medium
-        text-red-400
-        bg-red-500/5
-        border border-red-500/10
-        rounded-lg;
-}
-
-/* Results list */
-.users-content {
-    @apply
-        w-full
-        list-none;
-}
-
-/* Individual user button */
-.users-content > button {
-    @apply
-        flex items-center
-        w-full
-        gap-3
-        p-2
-        rounded-xl
-        bg-transparent
-        text-left
-        transition-all duration-150
-        cursor-pointer
-
-        hover:bg-white/5
-        active:scale-[0.98]
-
-        focus:outline-none
-        focus-visible:ring-2
-        focus-visible:ring-white/20;
-}
-
-/* Avatar */
-.profile-icon-search {
-    @apply
-        shrink-0
-        w-11 h-11
-        rounded-xl
-        object-cover
-        bg-zinc-800
-        border border-zinc-700;
-}
-
-/* Name + description */
-.short-description {
-    @apply
-        min-w-0
-        flex flex-col
-        gap-0.5;
-}
-
-.short-description h3 {
-    @apply
-        text-sm
-        font-medium
-        text-white
-        truncate;
-}
-
-.short-description p {
-    @apply
-        text-xs
-        text-zinc-500
-        truncate;
-}
-
-
-.skeleton-loading-state {
-    @apply
-        flex flex-col
-        w-full
-        gap-1
-        list-none
-        p-0 m-0;
-}
-
-.content-loading-state {
-    @apply
-        flex items-center
-        w-full
-        gap-3
-        p-2
-        rounded-xl;
-}
-
-.profile-loading-state {
-    @apply
-        shrink-0
-        w-11 h-11
-        rounded-xl
-        bg-zinc-800
-        animate-pulse;
-}
-
-.description-loading-state {
-    @apply
-        w-32 h-3
-        rounded-md
-        bg-zinc-800
-        animate-pulse;
-}
-
-
-
 .profile-section {
-    @apply
-        w-full
-        min-h-full
-        p-4
-        overflow-y-auto;
+    width: 100vw;
+    height: 100vh;
 }
+
+
 
 .profile-box {
-    @apply
-        w-full
-        max-w-5xl
-        mx-auto
-        p-4
-        rounded-2xl
-        bg-black/40
-        border border-white/10
-        backdrop-blur-md
-        shadow-xl;
+    width: 100%;
+    height: 100%;
 }
 
+
+@import "./Profile/profile_search.css";
+@import "./Profile/avatar.css";
+@import "./Profile/user_description.css";
 

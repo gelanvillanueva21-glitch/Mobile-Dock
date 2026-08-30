@@ -9,7 +9,7 @@ interface OutputProps {
 
 export function UsersOutPut({ profile, fullName, description }: OutputProps) {
     return (
-        <button>
+        <button className="users-profile-buttons">
             <img 
                 src={profile} 
                 alt="Profile" 

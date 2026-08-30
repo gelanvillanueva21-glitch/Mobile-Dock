@@ -8,6 +8,9 @@ import { getProfile } from "../../services/profile";
 import { UserDescription } from "../../layouts/Profile/Description";
 
 
+import guestProfile from "../../assets/icon/guest-profile.svg";
+
+
 export function Profile() {
     const [profile, setProfile] = useState<ProfileInfo | null>(null);
     const [guestDescription, setGuestDescription] = useState<string | null>(null);
@@ -24,7 +27,7 @@ export function Profile() {
             <div className="profile-box">
                 <SearchUser/>
                 <Avatar 
-                    profile={profile?.avatar_url? profile.avatar_url : ""}
+                    profile={profile?.avatar_url? profile.avatar_url : guestProfile}
                     fullName={profile?.full_name? profile.full_name : "guest"}
                 />
                 <UserDescription 

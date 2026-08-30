@@ -1,0 +1,299 @@
+.search-output-input {
+    position: relative;
+    width: calc(100% - 32px);
+    max-width: 520px;
+    margin: 24px auto 0;
+}
+
+.search-user-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    box-sizing: border-box;
+
+    background: #000000;
+    color: #ffffff;
+
+    border: 1px solid #333333;
+    border-radius: 10px;
+
+    outline: none;
+    font-size: 14px;
+
+    transition: border-color 150ms ease;
+}
+
+.search-user-input::placeholder {
+    color: #888888;
+}
+
+.search-user-input:hover {
+    border-color: #555555;
+}
+
+.search-user-input:focus {
+    border-color: #777777;
+    box-shadow: 0 0 0 2px #222222;
+}
+
+.result-container {
+    position: relative;
+    width: 100%;
+}
+
+.search-result-box {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+
+    width: 100%;
+    max-height: 228px;
+
+    overflow: hidden;
+
+    z-index: 9999;
+
+    background: #000000;
+
+    border: 1px solid #333333;
+    border-radius: 10px;
+
+    display: none;
+}
+
+.search-result-box.visible {
+    display: block;
+}
+
+.search-result-output {
+    width: 100%;
+    max-height: 228px;
+
+    margin: 0;
+    padding: 4px;
+
+    overflow-y: auto;
+    list-style: none;
+    box-sizing: border-box;
+
+    display: none;
+}
+
+.search-result-output.visible {
+    display: block;
+}
+
+.search-result-output::-webkit-scrollbar {
+    width: 5px;
+}
+
+.search-result-output::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.search-result-output::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 999px;
+}
+
+.search-result-output::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+}
+
+.users-content {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.users-profile-buttons {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    gap: 10px;
+
+    padding: 8px;
+
+    background: transparent;
+    color: #ffffff;
+
+    border: none;
+    border-radius: 8px;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition: background 120ms ease;
+}
+
+.users-profile-buttons:hover {
+    background: #111111;
+}
+
+.users-profile-buttons:active {
+    background: #222222;
+}
+
+.profile-icon-search {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+    background: #111111;
+}
+
+.short-description {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+    min-width: 0;
+}
+
+.short-description h3 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.short-description p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.skeleton-box-state {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+
+    width: 100%;
+    z-index: 9999;
+
+    padding: 4px;
+    box-sizing: border-box;
+
+    background: #000000;
+
+    border: 1px solid #333333;
+    border-radius: 10px;
+}
+
+.skeleton-loading-state {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.content-loading-state {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 8px;
+}
+
+.profile-loading-state {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: #111111;
+
+    animation: search-loading 1.3s ease-in-out infinite;
+}
+
+.description-loading-state {
+    width: 140px;
+    height: 10px;
+
+    border-radius: 5px;
+
+    background: #111111;
+
+    animation: search-loading 1.3s ease-in-out infinite;
+}
+
+@keyframes search-loading {
+    0% {
+        opacity: 0.45;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.45;
+    }
+}
+
+.error-message-search-user {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+
+    width: 100%;
+    z-index: 9999;
+
+    margin: 0;
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    background: #000000;
+
+    border: 1px solid #333333;
+    border-radius: 10px;
+
+    color: #aaaaaa;
+
+    font-size: 13px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .search-output-input {
+        width: calc(100% - 24px);
+        max-width: none;
+        margin-top: 18px;
+    }
+
+    .search-user-input {
+        height: 42px;
+    }
+
+    .search-result-box,
+    .search-result-output,
+    .skeleton-box-state {
+        max-height: 220px;
+    }
+}
