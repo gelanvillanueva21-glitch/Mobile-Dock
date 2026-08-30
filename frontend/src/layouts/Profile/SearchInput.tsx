@@ -72,10 +72,10 @@ export function SearchUser() {
                                         >
                                                 <UsersOutPut 
                                                     profile={`http://127.0.0.1:8000/avatars/${prof.avatar_url}`}
-                                                    fullName={prof.full_name}
+                                                    fullName={prof.full_name? prof.full_name : "guest"}
                                                     description={prof.about_me}
                                                 />
-                                        </li>
+                                        </li> 
                                     ))
                                 )}
                             </ul>

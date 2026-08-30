@@ -4,7 +4,7 @@
 export interface ProfileInfo{
     id: number;
     email: string;
-    full_name: string | "guest";
+    full_name: string | null;
     avatar_url: string;
     about_me: string;
     social_media: SocialMedia
