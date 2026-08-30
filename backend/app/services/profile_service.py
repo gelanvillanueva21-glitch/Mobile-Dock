@@ -46,6 +46,7 @@ class ProfileService:
         outputlist = []
         for data in result:
             outputlist.append({
+                "id": data.id,
                 "email": data.email,
                 "full_name": data.full_name,
                 "avatar_url": data.profile.avatar_url,
