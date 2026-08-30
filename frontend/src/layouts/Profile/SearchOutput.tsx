@@ -7,7 +7,7 @@ interface OutputProps {
 }
 
 
-export function Output({ profile, fullName, description }: OutputProps) {
+export function UsersOutPut({ profile, fullName, description }: OutputProps) {
     return (
         <button>
             <img 

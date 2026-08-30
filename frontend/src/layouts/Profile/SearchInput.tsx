@@ -2,21 +2,37 @@
 
 import { useEffect, useState } from "react";
 import { ApiRequest } from "../../services/client";
-import { Output } from "./SearchOutput";
+import { UsersOutPut } from "./SearchOutput";
 import { data } from "react-router-dom";
+import { useAuth } from "../../utilities/AuthProvider";
+import { searchProfile } from "../../services/profile";
+import type { ProfileInfo } from "../../types/Profile";
 
 
 export function SearchUser() {
     const [searchUser, setSearchUser] = useState("");
+    const [profile, setProfile] = useState<ProfileInfo[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
 
     useEffect(() => {
-        
+        const profileFetch = async () => {
+            try {
+                const data = await searchProfile(searchUser);
+                setProfile(data);
+            } catch {
+                setError("Failed to fetch users info")
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        profileFetch();
     }, [searchUser])
 
 
     return (
-        <div className="">
+        <div className="search-output-input">
             <input 
                 type="text" 
                 onChange={(e) => setSearchUser(e.target.value)}
@@ -26,7 +42,40 @@ export function SearchUser() {
 
             {
                 <div>
-                    {}
+                    {error ?  (
+                        <h2 className="error-message-search-user">{error}</h2>
+                    ) : (
+                        isLoading ? (
+                            <ul className="skeleton-loading-state">
+                                {[1, 2, 3].map((i) => (
+                                    <li
+                                        key={i}
+                                        className="content-loading-state"
+                                    >
+                                        <div className="profile-loading-state"/>
+                                        <div className="description-loading-state"/>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : profile.length === 0 ? (
+                            <p className="user-not-found">No users found, does not exist.</p>
+                        ) : (
+                            <ul>
+                                {profile.map((prof) => (
+                                    <li
+                                        key={prof.id}
+                                        className="users-content"
+                                    >
+                                            <UsersOutPut 
+                                                profile={prof.avatar_url}
+                                                fullName={prof.full_name}
+                                                description={prof.about_me}
+                                            />
+                                    </li>
+                                ))}
+                            </ul>
+                        )
+                    )}
                 </div>
             }
         </div>

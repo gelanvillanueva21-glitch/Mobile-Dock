@@ -2,6 +2,7 @@
 
 
 export interface ProfileInfo{
+    id: number;
     email: string;
     full_name: string | "guest";
     avatar_url: string;

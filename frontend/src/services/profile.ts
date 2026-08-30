@@ -9,7 +9,7 @@ export function getProfile(): Promise<ProfileInfo> {
 }
 
 
-export function searchProfile(name: string): Promise<ProfileInfo> {
+export function searchProfile(name: string): Promise<ProfileInfo[]> {
     return ApiRequest(`/profile/${name}`);
 }
 
