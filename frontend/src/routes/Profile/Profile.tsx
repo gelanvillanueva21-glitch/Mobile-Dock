@@ -9,6 +9,8 @@ import { UserDescription } from "../../layouts/Profile/Description";
 
 
 import guestProfile from "../../assets/icon/guest-profile.svg";
+import { SocialMediaButton } from "../../layouts/Profile/SocialMedia";
+import { AccountAction } from "../../layouts/Profile/AccountAction";
 
 
 export function Profile() {
@@ -34,6 +36,14 @@ export function Profile() {
                     description={profile?.about_me}
                     guestDescription={guestDescription}
                 />
+                <div className="social-and-account-box">
+                    <SocialMediaButton 
+                        facebook={profile?.social_media.facebook_url}
+                        instagram={profile?.social_media.instagram_url}
+                        linkedin={profile?.social_media.linkedin_url}
+                    />
+                    <AccountAction/>
+                </div>
             </div>
         </main>
     )

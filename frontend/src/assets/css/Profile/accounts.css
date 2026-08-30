@@ -1,0 +1,100 @@
+.social-and-account-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    width: calc(100% - 32px);
+    max-width: 900px;
+
+    margin: 24px auto 0;
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+}
+
+.social-media-boc {
+    padding: 8px 16px;
+}
+
+.media-header {
+    margin: 0 0 12px;
+
+    color: #111111;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.social-media-button-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.social-media-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition:
+        background 120ms ease,
+        border-color 120ms ease,
+        transform 100ms ease;
+}
+
+.social-media-button:hover {
+    background: #f5f5f5;
+    border-color: #cccccc;
+}
+
+.social-media-button:active {
+    transform: scale(0.96);
+}
+
+.social-media-button:focus-visible {
+    outline: 2px solid #222222;
+    outline-offset: 2px;
+}
+
+.social-media-icon {
+    width: 20px;
+    height: 20px;
+
+    object-fit: contain;
+}
+
+.account-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 16px;
+}
+
+@media (max-width: 700px) {
+    .social-and-account-box {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+
+    .social-media-boc,
+    .account-actions {
+        padding: 8px 0;
+    }
+}
