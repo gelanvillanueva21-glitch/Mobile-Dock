@@ -1,6 +1,5 @@
 
 
-
 interface IconProps{
     onClick: () => void;
     context: string;
@@ -30,7 +29,5 @@ export function IconButton({ onClick, context, src, alt }: IconProps) {
             </button>
     )
 }
-
-
 
 

@@ -37,11 +37,7 @@ export function SocialMediaButton({ facebook, instagram, linkedin }: SocialMedia
 
 
     function clickHandler(socialMedia: string | undefined, fallback: string) {
-        window.open(
-            socialMedia || fallback,
-            "_blank",
-            "noopener,noreferrer"
-        )
+        window.open(socialMedia || fallback, "_blank",)
     }
 
     return (

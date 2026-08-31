@@ -1,0 +1,49 @@
+.app-icon {
+    border: 1px black solid;
+    @apply
+        flex flex-col items-center
+        gap-2
+        p-2
+        rounded-2xl
+        transition-all duration-150
+        cursor-pointer
+        select-none
+
+        hover:bg-white/10
+        active:scale-95
+
+        focus:outline-none
+        focus-visible:ring-2
+        focus-visible:ring-white/40;
+}
+
+.app-icon-image {
+    
+    @apply
+        w-16 h-16
+        rounded-[18px]
+        overflow-hidden
+        shadow-lg
+
+        transition-all duration-150
+        group-hover:scale-105
+        group-hover:shadow-xl;
+}
+
+.icon-image-content {
+    @apply
+        w-full h-full
+        object-cover
+        pointer-events-none;
+}
+
+.app-title {
+    color: black;
+    @apply
+        max-w-20
+        text-xs
+        font-medium
+        text-center
+        truncate
+        drop-shadow-md;
+}

@@ -1,7 +1,7 @@
 
 
 import { useNavigate } from "react-router-dom";
-import { IconButton } from "../../components/buttons/Icon";
+import { IconButton } from "../../utilities/IconButton";
 import profileIcon from "../../assets/icon/profile-svgrepo-com.svg";
 import settingIcon from "../../assets/icon/settings-2-svgrepo-com.svg";
 import homeIcon from "../../assets/icon/home-icon-silhouette-svgrepo-com.svg";
