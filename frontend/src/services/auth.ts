@@ -20,12 +20,12 @@ export function register(data: RegisterPayload): Promise<UserInfo> {
     });
 }
 
-export function changePassword(password: string): Promise<{ message: string }> {
+export function changePassword(new_password: string): Promise<{ message: string }> {
     return ApiRequest('auth/change_password', {
         method: 'POST',
-        body: JSON.stringify(password)
-    })
-}
+        body: JSON.stringify({ new_password })
+        })
+    }
 
 
 export function logout(): Promise<{ message: string }> {

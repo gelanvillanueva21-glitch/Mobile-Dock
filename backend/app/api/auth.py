@@ -1,10 +1,11 @@
 
 
-from fastapi import APIRouter, Depends, Response, HTTPException, status, Query
+from fastapi import APIRouter, Depends, Response, HTTPException, status, Body
 from typing import Annotated
 
+
 from app.repositories.user import UserRepository
-from app.schemas.user import UserCreate, UserLogin, UserResponse
+from app.schemas.user import UserCreate, UserLogin, UserResponse, ChangePassword
 from app.utilities.deps import get_user_repo, get_user_service, UserDependency
 from app.config.security import verify_password, create_access_token
 from app.database.models.users import User
@@ -75,12 +76,14 @@ async def login(
 
 @router.post("/change_password")
 async def change_password(
-    new_password: Annotated[str, Query(min_length=8, max_length=255)],
+    data: ChangePassword,
     user: UserDependency,
     user_service: Annotated[UserService, Depends(get_user_service)]
 ):
     try:
-        await user_service.change_password(new_password, user.id)
+        print("Hello Alton!")
+        await user_service.change_password(data.new_password, user.id)
+        print("Changed Password!")  
         return { "status": "success" }
     except ValueError:
         raise HTTPException(

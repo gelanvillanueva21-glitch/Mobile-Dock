@@ -2,7 +2,7 @@
 
 
 export interface RegisterPayload{
-    fullName?: string;
+    full_name?: string;
     email: string;
     password: string;
 }

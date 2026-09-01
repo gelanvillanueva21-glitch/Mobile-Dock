@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Avatar } from "../../layouts/Profile/AvatarProfile";
 import { SearchUser } from "../../layouts/Profile/SearchInput";
-import type { ProfileInfo } from "../../types/Profile";
 import { getProfile } from "../../services/profile";
 import { UserDescription } from "../../layouts/Profile/Description";
 
@@ -11,59 +10,67 @@ import { UserDescription } from "../../layouts/Profile/Description";
 import guestProfile from "../../assets/icon/guest-profile.svg";
 import { SocialMediaButton } from "../../layouts/Profile/SocialMedia";
 import { AccountAction } from "../../layouts/Profile/AccountAction";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../utilities/AuthProvider";
+import { ErrorWindow } from "../../components/ErrorWindow";
 
 
 export function Profile() {
-    const [profile, setProfile] = useState<ProfileInfo | null>(null);
-    const [guestDescription, setGuestDescription] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [errorWindow, setErrorWindow] = useState<"error" | null>(null);
+
     const { user } = useAuth();
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ["profile"],
+        queryFn: getProfile,
+        enabled: !!user
+    });
 
-    useEffect(() => {
-        setIsLoading(true);
-
-        getProfile()
-            .then(setProfile)
-            .catch(() => setGuestDescription('You have not log in'))
-            .finally(() => setIsLoading(false))
-    }, [user]);
+    function onCloseHandle() {
+        setErrorWindow(null);
+    }
 
     return (
         <main className="profile-section">
-            {isLoading ? (
-                <div className="profile-skeleton">
-                    <div className="skeleton-avatar" />
-                    <div className="skeleton-name" />
-                    <div className="skeleton-info">
-                        <div className="skeleton-info-left" />
-                        <div className="skeleton-info-right" />
-                    </div>
-                    <div className="skeleton-bottom">
-                        <div className="skeleton-bottom-left" />
-                        <div className="skeleton-bottom-right" />
-                    </div>
-                </div>
+
+            {error && errorWindow? (
+                <ErrorWindow  onClose={onCloseHandle} onTryAgain={refetch}/>
             ) : (
-                <div className="profile-box">
-                    <SearchUser/>
-                    <Avatar 
-                        profile={profile?.avatar_url? `http://127.0.0.1:8000/avatars/${profile.avatar_url}` : guestProfile}
-                        fullName={profile?.full_name? profile.full_name : "guest"}
-                    />
-                    <UserDescription 
-                        description={user && profile?.about_me === null? `${profile.full_name}'s description empty` : profile?.about_me}
-                        guestDescription={guestDescription}
-                    />
-                    <div className="social-and-account-box">
-                        <SocialMediaButton 
-                            facebook={profile?.social_media.facebook_url}
-                            instagram={profile?.social_media.instagram_url}
-                            linkedin={profile?.social_media.linkedin_url}
-                        />
-                        <AccountAction/>
-                    </div>
-                </div>
+                <>
+                    {isLoading ? (
+                        <div className="profile-skeleton">
+                            <div className="skeleton-avatar" />
+                            <div className="skeleton-name" />
+                            <div className="skeleton-info">
+                                <div className="skeleton-info-left" />
+                                <div className="skeleton-info-right" />
+                            </div>
+                            <div className="skeleton-bottom">
+                                <div className="skeleton-bottom-left" />
+                                <div className="skeleton-bottom-right" />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="profile-box">
+                            <SearchUser/>
+                            <Avatar 
+                                profile={data?.avatar_url? `http://127.0.0.1:8000/avatars/${data.avatar_url}` : guestProfile}
+                                fullName={data?.full_name? data.full_name : "guest"}
+                            />
+                            <UserDescription 
+                                description={data && data?.about_me === null? "Currently empty. Have not edit it yet." : data?.about_me}
+                                guestDescription={"Must log in first."}
+                            />
+                            <div className="social-and-account-box">
+                                <SocialMediaButton 
+                                    facebook={data?.social_media.facebook_url}
+                                    instagram={data?.social_media.instagram_url}
+                                    linkedin={data?.social_media.linkedin_url}
+                                />
+                                <AccountAction/>
+                            </div>
+                        </div>
+                    )}
+                </>
             )}
         </main>
     )

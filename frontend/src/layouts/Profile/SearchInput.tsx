@@ -1,10 +1,7 @@
 
 
 import { useEffect, useState } from "react";
-import { ApiRequest } from "../../services/client";
 import { UsersOutPut } from "./SearchOutput";
-import { data } from "react-router-dom";
-import { useAuth } from "../../utilities/AuthProvider";
 import { searchProfile } from "../../services/profile";
 import type { ProfileInfo } from "../../types/Profile";
 
@@ -76,7 +73,7 @@ export function SearchUser() {
                                             className="users-content"
                                         >
                                             <UsersOutPut
-                                            profile={`http://127.0.0.1:8000/avatars/${prof.avatar_url}`}
+                                            profile={ prof.avatar_url? prof.avatar_url : null }
                                             fullName={prof.full_name? prof.full_name : "guest"}
                                             description={prof.about_me}
                                                 />

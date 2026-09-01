@@ -34,7 +34,8 @@ export function RegisterWindow({ onClose }: WindowProps) {
 
         setIsSubmitting(true);
         try {
-            await register({ email, fullName: fullName || undefined, password });
+            const full_name = fullName;
+            await register({ email, full_name, password });
             await login({ email, password });
         } catch (err) {
             if (err instanceof ApiError)

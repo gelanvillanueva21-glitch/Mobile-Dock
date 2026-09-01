@@ -38,11 +38,11 @@ class UserService:
         if verify_password(password, result.hashed_password):
             raise ValueError()
         else:
-            self.user_repo.change_password(
+            await self.user_repo.change_password(
                 hash_password(password), 
                 user_id
             )
-        await self.db.commit()
+            await self.db.commit()
         return
 
 
