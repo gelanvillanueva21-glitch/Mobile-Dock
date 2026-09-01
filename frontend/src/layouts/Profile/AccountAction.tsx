@@ -374,3 +374,7 @@ function LogoutWindow({ onClose }: WindowProps) {
 }
 
 
+function ChangePassword() {
+    
+}
+

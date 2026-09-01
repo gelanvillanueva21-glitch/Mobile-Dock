@@ -1,15 +1,16 @@
 
 
-from fastapi import APIRouter, Depends, Response, HTTPException, status
+from fastapi import APIRouter, Depends, Response, HTTPException, status, Query
 from typing import Annotated
 
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreate, UserLogin, UserResponse
-from app.utilities.deps import get_user_repo, get_current_user, get_user_service
+from app.utilities.deps import get_user_repo, get_user_service, UserDependency
 from app.config.security import verify_password, create_access_token
 from app.database.models.users import User
 
 from app.services.user_service import UserService
+
 
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -72,6 +73,27 @@ async def login(
         return {"message": "Login successfully"}
 
 
+@router.post("/change_password")
+async def change_password(
+    new_password: Annotated[str, Query(min_length=8, max_length=255)],
+    user: UserDependency,
+    user_service: Annotated[UserService, Depends(get_user_service)]
+):
+    try:
+        await user_service.change_password(new_password, user.id)
+        return { "status": "success" }
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must not be the same to previous password."
+        )
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Failed to change password."
+        )
+
+
 
 @router.post("/logout")
 async def logout(response: Response):
@@ -81,7 +103,7 @@ async def logout(response: Response):
 
 
 @router.get("/me", response_model=UserResponse)
-async def get_current_me(current_user: Annotated[User, Depends(get_current_user)]):
+async def get_current_me(current_user: UserDependency):
     return current_user
 
 

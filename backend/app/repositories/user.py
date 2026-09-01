@@ -34,6 +34,11 @@ class UserRepository:
         return user
 
 
+    async def change_password(self, hashed_password: str, user_id: int):
+        user = await self.get_by_id(user_id);
+        user.hashed_password = hashed_password
+
+
 
 
 
