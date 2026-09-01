@@ -247,6 +247,7 @@ function RegisterWindow({ onClose }: WindowProps) {
                     <input
                         type="text"
                         value={fullName}
+                        placeholder="Gelan Villanueva"
                         onChange={(e) => setFullName(e.target.value)}
                         className="h-10 w-full rounded-lg border border-gray-300 px-3 text-sm text-gray-900 outline-none transition focus:border-gray-500"
                     />
@@ -258,6 +259,7 @@ function RegisterWindow({ onClose }: WindowProps) {
                     <input
                         type="email"
                         value={email}
+                        placeholder="gelanmar123@gmail.com"
                         onChange={(e) => setEmail(e.target.value)}
                         className="h-10 w-full rounded-lg border border-gray-300 px-3 text-sm text-gray-900 outline-none transition focus:border-gray-500"
                     />
@@ -269,6 +271,7 @@ function RegisterWindow({ onClose }: WindowProps) {
                     <input
                         type={showPassword ? "text" : "password"}
                         value={password}
+                        placeholder="Gelan123mar"
                         onChange={(e) => setPassword(e.target.value)}
                         className="h-10 w-full rounded-lg border border-gray-300 px-3 text-sm text-gray-900 outline-none transition focus:border-gray-500"
                     />
@@ -280,6 +283,7 @@ function RegisterWindow({ onClose }: WindowProps) {
                     <input
                         type={showPassword ? "text" : "password"}
                         value={confirmPassword}
+                        placeholder="Gelan123mar"
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className="h-10 w-full rounded-lg border border-gray-300 px-3 text-sm text-gray-900 outline-none transition focus:border-gray-500"
                     />
@@ -374,7 +378,101 @@ function LogoutWindow({ onClose }: WindowProps) {
 }
 
 
-function ChangePassword() {
+function ChangePassword({ onClose }: WindowProps) {
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmNewPassword, setConfirmNewPassword] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     
+    async function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+        setError(null)
+
+        if (newPassword.length < 8) {
+            setError("Password must at least 8 characters.");
+            return;
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            setError("Password not the same");
+            return;
+        }
+
+        
+
+    }
+
+    return (
+        <div className="">
+
+            <button
+                type="button"
+                onClick={onClose}
+                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-md text-xl text-gray-500 transition hover:bg-gray-100 hover:text-black"
+                aria-label="Close register window"
+            >
+                ×
+            </button>
+
+            <div className="">
+                <h1 className="">Change Password.</h1>
+                <p className="">
+                    Password must not be the same as previous password.
+                    Must be at least 8 characters.
+                </p>
+            </div>
+            <form
+                onSubmit={handleSubmit}
+                className=""
+            >
+                <label className="">New Password.</label>
+                <input 
+                    type={showPassword? "text" : "password"}
+                    value={newPassword}
+                    placeholder="Gelan123mar"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    className=""
+                />
+
+                <label className="">Confirm New Password.</label>
+                <input 
+                    type={showPassword? "text" : "password"}
+                    value={confirmNewPassword}
+                    placeholder="Gelan123mar"
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    required
+                    className="" 
+                />
+
+                {error && (
+                    <p>
+                        {error}
+                    </p>
+                )}
+
+                <div className="">
+                    <input 
+                        type="checkbox"
+                        checked={showPassword}
+                        onChange={(e) => setShowPassword(e.target.checked)} 
+                    />
+                    <label className="">
+                        {showPassword? "Show Password" : "Hide Password"}
+                    </label>
+                </div>
+
+                <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className=""
+                >
+                    {isSubmitting? "Changin password..." : "Change password"}
+                </button>
+
+            </form>
+        </div>
+    )
 }
 
