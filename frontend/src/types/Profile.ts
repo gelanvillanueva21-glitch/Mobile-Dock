@@ -11,7 +11,7 @@ export interface ProfileInfo{
 }
 
 
-interface SocialMedia{
+export interface SocialMedia{
     facebook_url: string;
     instagram_url: string;
     linkedin_url: string;
