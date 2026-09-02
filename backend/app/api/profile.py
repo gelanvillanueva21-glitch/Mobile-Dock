@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from typing import Annotated
 from pydantic import Field
 
-from app.schemas.profile import ProfileResponse, SocialMedia
+from app.schemas.profile import ProfileResponse, SocialMedia, EditProfile
 from app.repositories.profile import ProfileRepository
 from app.services.profile_service import ProfileService
 from app.utilities.deps import get_profile_service, UserDependency
@@ -20,83 +20,30 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix='/profile', tags=['profile'])
 
 
-
-@router.post("/edit_name")
-async def edit_name(
-    full_name: Annotated[str, Field(min_length=8, max_length=255)],
+@router.post("/change_profile")
+async def edit_profile(
+    data: EditProfile,
     user: UserDependency,
-    profile_service: Annotated[ProfileService, Depends(get_profile_service)]
+    service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
-        result = await profile_service.change_full_name(full_name, user)
-        return {
-            "status": "success",
-            "full_name": result
-        }
-    except Exception:
-        logger.error("Something went wrong")
+        await service.change_full_name(data.full_name, user)
+        await service.edit_social_media(data.social_media, user.id)
+        avatar_url = save_avatar_file(data.avatar_url)
+        await service.edit_avatar(avatar_url, user.id)
+        await service.edit_or_change_description(data.about_me, user.id)
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Failed to change full name"
+            detail="Failed to change profile."
         )
-
-
-@router.post("/edit_social")
-async def edit_social_media(
-    social_media: SocialMedia,
-    profile_service: Annotated[ProfileService, Depends(get_profile_service)],
-    user: UserDependency
-):
-    try:
-        await profile_service.edit_social_media(social_media, user.id)
-        return {"status": "success",}
     except Exception:
-        logger.error("Something wrong")
+        logger.error("Something error occured.")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Failed to change social media's"
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Something error occured."
         )
 
-
-
-@router.post("/edit_avatar")
-async def edit_avatar(
-    avatar: Annotated[UploadFile, File(...)],
-    profile_service: Annotated[ProfileService, Depends(get_profile_service)],
-    user: UserDependency
-):
-    try:
-        print("Hello world!")
-        avatar_url = save_avatar_file(avatar)
-        print(avatar_url)
-        await profile_service.edit_avatar(avatar_url, user.id)
-        return { "status": "success" }
-    except Exception:
-        logger.error("Something wrong")
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Failed to change profile picture"
-        )
-
-
-
-@router.post("/edit_about_me")
-async def edit_aboute_me(
-    description: str,
-    profile_service: Annotated[ProfileService, Depends(get_profile_service)],
-    profile: ProfileRepoDependency,
-    user: UserDependency
-):
-    try:
-        print("Router")
-        await profile_service.edit_or_change_description(description, user.id)
-        return { "status": "success" }
-    except Exception:
-        logger.error("Something wrong at [Edit about me router]")
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Failed to edit about me"
-        )
 
 
 
