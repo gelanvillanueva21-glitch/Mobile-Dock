@@ -11,6 +11,14 @@ export interface ProfileInfo{
 }
 
 
+export interface ChangeProfile{
+    full_name: string | null;
+    avatar_url: File | null;
+    about_me: string | null;
+    social_media: SocialMedia;
+}
+
+
 export interface SocialMedia{
     facebook_url: string;
     instagram_url: string;

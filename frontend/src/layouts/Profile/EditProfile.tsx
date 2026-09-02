@@ -5,6 +5,9 @@ import type { ProfileInfo } from "../../types/Profile";
 import editIcon from "../../assets/icon/edit-3-svgrepo-com.svg";
 import guestIcon from "../../assets/icon/guest-profile.svg";
 import { useRef, useState } from "react";
+import { ApiError, ApiRequest } from "../../services/client";
+import { useMutation } from "@tanstack/react-query";
+import { editProfile } from "../../services/profile";
 
 interface Props{
     profile?: ProfileInfo;
@@ -13,12 +16,16 @@ interface Props{
 
 
 export function EditProfile({ profile, onClose }: Props) {
+    const [fullName, setFullName] = useState("");
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
     const [aboutMe, setAboutMe] = useState( profile?.about_me? profile.about_me : "");
     const [facebookUrl, setFacebookUrl] = useState("");
     const [instagramUrl, setInstagramUrl] = useState("");
     const [linkedinUrl, setLinkedinUrl] = useState("");
     const [clickEdit, setClickEdit] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState()
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const profilePictureUrl = profilePicture
@@ -27,33 +34,48 @@ export function EditProfile({ profile, onClose }: Props) {
 
 
     function clickHandle() {
-
+        const data = {
+            full_name: fullName
+        }
+        const mutation = useMutation({
+            mutationFn: editProfile
+        })
     }
 
     return (
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 rounded-2xl border border-gray-200 bg-white p-6">
-            <div className="relative h-28 w-28">
-                <img 
-                    src={profilePictureUrl}
-                    alt="Profile"
-                    className="h-full w-full rounded-full border border-gray-200 object-cover" 
-                />
-                <input 
-                    ref={fileInputRef}
-                    type="file" 
-                    className="hidden"
-                />
-                <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="absolute bottom-1 left-1 flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition hover:bg-gray-100"
-                >
+            <div className="flex items-center gap-4">
+                <div className="relative h-28 w-28">
                     <img 
-                        src={editIcon} 
-                        alt="+"
-                        className="h-4 w-4 object-contain"
+                        src={profilePictureUrl}
+                        alt="Profile"
+                        className="h-full w-full rounded-full border border-gray-200 object-cover" 
                     />
-                </button>
+                    <input 
+                        ref={fileInputRef}
+                        type="file" 
+                        className="hidden"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="absolute bottom-1 left-1 flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition hover:bg-gray-100"
+                    >
+                        <img 
+                            src={editIcon} 
+                            alt="+"
+                            className="h-4 w-4 object-contain"
+                        />
+                    </button>
+                    </div>
+                <div>
+                    <input 
+                        type="text"
+                        value={profile?.full_name ?? "guest"}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="mt-3 w-full rounded-lg border border-gray-300 px-3 py-2 text-center text-sm font-medium text-gray-900 outline-none transition focus:border-gray-500 focus:ring-1 focus:ring-gray-300"
+                    />
+                </div>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
                 <div className="rounded-xl border border-gray-200 p-4">
