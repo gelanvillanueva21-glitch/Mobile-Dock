@@ -8,6 +8,7 @@ from app.database.database import Base
 
 if TYPE_CHECKING:
     from app.database.models.profile import Profile
+    from app.database.models.stats import Statistics
 
 
 class User(Base):
@@ -36,6 +37,10 @@ class User(Base):
     profile: Mapped["Profile"] = relationship(
         "Profile",
         back_populates="user"
+    )
+    stats: Mapped["Statistics"] = relationship(
+        "Statistics",
+        back_populates="stats_owner"
     )
 
 

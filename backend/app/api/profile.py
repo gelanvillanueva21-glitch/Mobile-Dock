@@ -6,13 +6,9 @@ from fastapi.staticfiles import StaticFiles
 from typing import Annotated
 from pydantic import Field
 
-from app.schemas.profile import ProfileResponse, SocialMedia, EditProfile
-from app.repositories.profile import ProfileRepository
+from app.schemas.profile import EditProfile
 from app.services.profile_service import ProfileService
 from app.utilities.deps import get_profile_service, UserDependency
-from app.database.models.profile import Profile
-from app.database.models.users import User
-from app.utilities.deps import ProfileRepoDependency
 from app.utilities.data_url import save_avatar_file
 
 
