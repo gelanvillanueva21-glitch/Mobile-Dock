@@ -5,7 +5,6 @@ import type { ProfileInfo } from "../../types/Profile";
 import editIcon from "../../assets/icon/edit-3-svgrepo-com.svg";
 import guestIcon from "../../assets/icon/guest-profile.svg";
 import { useRef, useState } from "react";
-import { ApiError, ApiRequest } from "../../services/client";
 import { useMutation } from "@tanstack/react-query";
 import { editProfile } from "../../services/profile";
 
@@ -25,7 +24,7 @@ export function EditProfile({ profile, onClose }: Props) {
     const [clickEdit, setClickEdit] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState()
+    const [error, setError] = useState<string | null>(null)
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const profilePictureUrl = profilePicture
@@ -34,12 +33,37 @@ export function EditProfile({ profile, onClose }: Props) {
 
 
     function clickHandle() {
+        console.log("Clicked!")
+        setIsLoading(true);
         const data = {
-            full_name: fullName
-        }
+            full_name: fullName || null,
+            avatar_url: profilePicture,
+            about_me: aboutMe || null,
+            social_media: { 
+                facebook_url: facebookUrl || null,
+                instagram_url: instagramUrl || null,
+                linkedin_url: linkedinUrl || null
+            }
+        };
         const mutation = useMutation({
             mutationFn: editProfile
         })
+        mutation.mutate(data)
+
+        if (mutation.isSuccess) {
+            setError(null);
+            return;
+        }
+
+        if (mutation.isError) {
+            setError("Failed to change profile.");
+            return;
+        }
+
+        setIsLoading(false);
+        onClose();
+        return;
+
     }
 
     return (
@@ -71,7 +95,7 @@ export function EditProfile({ profile, onClose }: Props) {
                 <div>
                     <input 
                         type="text"
-                        value={profile?.full_name ?? "guest"}
+                        placeholder={profile?.full_name? profile.full_name : fullName ?? "guest"}
                         onChange={(e) => setFullName(e.target.value)}
                         className="mt-3 w-full rounded-lg border border-gray-300 px-3 py-2 text-center text-sm font-medium text-gray-900 outline-none transition focus:border-gray-500 focus:ring-1 focus:ring-gray-300"
                     />
@@ -130,6 +154,7 @@ export function EditProfile({ profile, onClose }: Props) {
                     />
                 </div>
             </div>
+
             <div className="flex justify-end gap-2 border-t border-gray-200 pt-5">
                 <button
                     type="button"
@@ -140,7 +165,7 @@ export function EditProfile({ profile, onClose }: Props) {
                 </button>
                 <button 
                     type="button"
-                    onChange={() => setClickEdit(true)}
+                    onClick={() => setClickEdit(true)}
                     className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
                 >
                     Save changes.
@@ -158,6 +183,12 @@ export function EditProfile({ profile, onClose }: Props) {
                             Your updated profile information will be saved.
                         </p>
 
+                        {error && (
+                            <p className="">
+                                {error}
+                            </p>
+                        )}
+
                         <div className="mt-6 flex justify-end gap-2">
                             <button
                                 type="button"
@@ -172,7 +203,7 @@ export function EditProfile({ profile, onClose }: Props) {
                                 onClick={clickHandle}
                                 className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
                             >
-                                Yes, Save
+                                {isLoading? "Saving profile..." : "Yes, Save."}
                             </button>
                         </div>
                     </div>

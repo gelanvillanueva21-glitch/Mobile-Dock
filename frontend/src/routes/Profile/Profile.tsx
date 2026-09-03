@@ -63,20 +63,22 @@ export function Profile() {
                                 <div className="flex-1">
                                     <SearchUser/>
                                 </div>
-                                <div className="flex items-center">
-                                    <button
-                                        type="button"
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white transition hover:bg-gray-100"
-                                        aria-label="Edit profile"
-                                        onClick={() => setEditProfile(true)}
-                                    >
-                                        <img
-                                            src={editIcon}
-                                            alt=""
-                                            className="h-4 w-4 object-contain"
-                                        />
-                                    </button>
-                                </div>
+                                { user && (
+                                    <div className="flex items-center">
+                                        <button
+                                            type="button"
+                                            className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 bg-white transition hover:bg-gray-100"
+                                            aria-label="Edit profile"
+                                            onClick={() => setEditProfile(true)}
+                                        >
+                                            <img
+                                                src={editIcon}
+                                                alt=""
+                                                className="h-4 w-4 object-contain"
+                                            />
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             <Avatar 
                                 profile={data?.avatar_url? `http://127.0.0.1:8000/avatars/${data.avatar_url}` : guestProfile}
@@ -88,9 +90,9 @@ export function Profile() {
                             />
                             <div className="social-and-account-box">
                                 <SocialMediaButton 
-                                    facebook={data?.social_media.facebook_url}
-                                    instagram={data?.social_media.instagram_url}
-                                    linkedin={data?.social_media.linkedin_url}
+                                    facebook={data?.social_media.facebook_url ?? undefined}
+                                    instagram={data?.social_media.instagram_url ?? undefined}
+                                    linkedin={data?.social_media.linkedin_url ?? undefined}
                                 />
                                 <AccountAction/>
                             </div>

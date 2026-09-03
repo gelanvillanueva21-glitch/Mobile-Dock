@@ -20,9 +20,9 @@ export interface ChangeProfile{
 
 
 export interface SocialMedia{
-    facebook_url: string;
-    instagram_url: string;
-    linkedin_url: string;
+    facebook_url: string | null;
+    instagram_url: string | null;
+    linkedin_url: string | null;
 }
 
 
