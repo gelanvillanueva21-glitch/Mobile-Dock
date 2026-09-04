@@ -26,7 +26,7 @@ class UserService:
     ) -> User:
         existing = await self.user_repo.get_by_email(data.email)
         if existing:
-            raise ValueError
+            raise ValueError()
         result = self.user_repo.create(data)
         await self.db.commit()
         await self.db.refresh(result)

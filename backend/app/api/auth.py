@@ -27,7 +27,9 @@ async def register(
     service: Annotated[UserService, Depends(get_user_service)]
 ):
     try:
+        print("Hello world")
         result = await service.create_account(data)
+        print(result)
         return result
     except ValueError:
         raise HTTPException(

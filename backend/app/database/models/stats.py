@@ -21,9 +21,9 @@ class Statistics(Base):
 
     stats_owner: Mapped["User"] = relationship(
         "User",
-        back_populates="stat"
+        back_populates="stats"
     )
-    application: Mapped[list["Application"]] = relationship(
+    owner_application: Mapped[list["Application"]] = relationship(
         "Application",
         back_populates="owner_application"
     )
@@ -48,7 +48,7 @@ class Application(Base):
 
     owner_application: Mapped["Statistics"] = relationship(
         "Statistics",
-        back_populates="profile"
+        back_populates="owner_application"
     )
 
 

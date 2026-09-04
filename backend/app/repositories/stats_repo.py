@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-from app.database.models.stats import Statistics, Application, ProfileViewed, UserWhoViewed
+from app.database.models.stats import Statistics, Application, ProfileViewed
 
 
 
@@ -49,5 +49,22 @@ class StatisticsRepository:
 
     async def get_profile_viewer(self, user_id: int):
         result = await self.db.execute(select(ProfileViewed).where(ProfileViewed.user_profile_id == user_id))
+        return result.scalar_one_or_none()
+
+
+    async def get_profile_viewed(self, user_id: int):
+        result = await self.db.execute(select(ProfileViewed).where(ProfileViewed.viewed_user == user_id))
+        return result.scalar_one_or_none()
+
+
+    async def get_application(self, user_id: int): 
+        result = await self.db.execute(select(Application.user_id == user_id))
         return result.scalars().all()
+
+
+    async def get_all_profile_viewer(self, user_id):
+        print("Hello world")
+        result = await self.db.execute(select(Statistics).where(Statistics.user_id == user_id))
+        data = result.scalar_one_or_none()
+        return data.profile_viewed
 

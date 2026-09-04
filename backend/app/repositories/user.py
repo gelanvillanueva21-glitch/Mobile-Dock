@@ -15,7 +15,9 @@ class UserRepository:
 
 
     async def get_by_email(self, email: str) -> User | None:
+        print("Hello")
         result = await self.db.execute(select(User).where(User.email == email))
+        print(result)
         return result.scalar_one_or_none()
 
 

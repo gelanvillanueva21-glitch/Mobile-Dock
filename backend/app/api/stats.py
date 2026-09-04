@@ -56,18 +56,20 @@ async def view_profile(
         )
 
 
-@router.post("/")
+@router.get("/")
 async def get_stats(user: UserDependency, repo: StatsDependency):
     try:
+        print("Lool?")
         data = await repo.get_or_create_stats(user.id)
         if not data:
             raise ValueError()
-        response = await repo.get_profile_viewer(user.id)
+        profile_view = await repo.get_profile_viewer(user.id)
+        print("Hello")
         return {
             "status": "success",
-            "application": [app.application for app in data.application],
-            "profile_viewed": [prof.user_profile_id for prof in data.profile_viewed],
-            "profile_viewer": [prof.user_id for prof in response]
+            "application": [app.application for app in data.owner_application],
+            "profile_viewed": profile_view.user_profile_id,
+            "profile_viewer": profile_view.viewed_user
         }
     except ValueError:
         raise HTTPException(
