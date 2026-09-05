@@ -30,7 +30,18 @@ export function EditProfile({ profile, onClose }: Props) {
     const profilePictureUrl = profilePicture
         ? URL.createObjectURL(profilePicture)
         : profile?.avatar_url ?? guestIcon;
-
+    const mutation = useMutation({
+            mutationFn: editProfile,
+            onSuccess: () => {
+                setError(null);
+                setIsLoading(false);
+                onClose();
+            },
+            onError: () => {
+                setError("Failed to change profile.");
+                setIsLoading(false);
+            },
+        });
 
     function clickHandle() {
         console.log("Clicked!")
@@ -45,25 +56,8 @@ export function EditProfile({ profile, onClose }: Props) {
                 linkedin_url: linkedinUrl || null
             }
         };
-        const mutation = useMutation({
-            mutationFn: editProfile
-        })
         mutation.mutate(data)
-
-        if (mutation.isSuccess) {
-            setError(null);
-            return;
-        }
-
-        if (mutation.isError) {
-            setError("Failed to change profile.");
-            return;
-        }
-
-        setIsLoading(false);
-        onClose();
         return;
-
     }
 
     return (
@@ -79,6 +73,11 @@ export function EditProfile({ profile, onClose }: Props) {
                         ref={fileInputRef}
                         type="file" 
                         className="hidden"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file)
+                                setProfilePicture(file);
+                        }}
                     />
                     <button
                         type="button"
@@ -184,7 +183,7 @@ export function EditProfile({ profile, onClose }: Props) {
                         </p>
 
                         {error && (
-                            <p className="">
+                            <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600">
                                 {error}
                             </p>
                         )}

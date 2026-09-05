@@ -18,11 +18,9 @@ export function editProfile(data: ChangeProfile): Promise<ChangeProfile>  {
     const formData = new FormData();
 
     formData.append("full_name", data.full_name ?? "");
-    formData.append("about_me", data.about_me ?? "");
-
     if (data.avatar_url) 
         formData.append("avatar_url", data.avatar_url);
-
+    formData.append("about_me", data.about_me ?? "");
     formData.append("social_media", JSON.stringify(data.social_media));
 
     return ApiRequest('profile/change_profile', {

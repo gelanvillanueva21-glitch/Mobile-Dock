@@ -1,6 +1,6 @@
 
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar } from "../../layouts/Profile/AvatarProfile";
 import { SearchUser } from "../../layouts/Profile/SearchInput";
 import { getProfile } from "../../services/profile";
