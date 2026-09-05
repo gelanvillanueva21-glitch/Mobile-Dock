@@ -6,6 +6,10 @@ from pathlib import Path
 
 
 def save_avatar_file(avatar_file):
+
+    if not avatar_file:
+        return None
+
     DATA_URL = Path("/app/app/data")
     DATA_URL.mkdir(parents=True, exist_ok=True)
     extension = Path(avatar_file.filename).suffix.lower()

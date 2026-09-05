@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix='/profile', tags=['profile'])
 
 
-@router.post("/change_profile")
+@router.post("/change_profile") 
 async def edit_profile(
     data: EditProfile,
     user: UserDependency,
@@ -28,6 +28,7 @@ async def edit_profile(
         avatar_url = save_avatar_file(data.avatar_url)
         await service.edit_avatar(avatar_url, user.id)
         await service.edit_or_change_description(data.about_me, user.id)
+        return { "status": "success" }
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -36,7 +37,7 @@ async def edit_profile(
     except Exception:
         logger.error("Something error occured.")
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Something error occured."
         )
 
@@ -55,7 +56,7 @@ async def get_profile(
     except Exception as e:
         logger.exception(f"Error at [get Profile]: {e}")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to fetch profile"
         )
 
@@ -76,7 +77,7 @@ async def search_profile(
     except Exception as e:
         logger.exception(f"Error at [get Profile]: {e}")
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to fetch user"
         )
 

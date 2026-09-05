@@ -90,7 +90,7 @@ class ProfileService:
 
     async def edit_avatar(
         self,
-        avatar_url: str,
+        avatar_url: str | None,
         user_id: int
     ) -> None:
         await self.profile_repo.edit_avatar(avatar_url, user_id)

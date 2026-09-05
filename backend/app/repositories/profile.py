@@ -15,7 +15,7 @@ class ProfileRepository:
         self.db = db
 
 
-    async def check_by_id_profile(self, user_id: int) -> Profile:
+    async def check_by_id_profile(self, user_id: int) -> Profile | None:
         data = await self.db.execute(select(Profile).where(Profile.user_id == user_id))
         return data.scalar_one_or_none()
 
@@ -48,7 +48,7 @@ class ProfileRepository:
 
     async def edit_avatar(
         self, 
-        new_avatar_url: str,
+        new_avatar_url: str | None,
         user_id: int
     ) -> None:
         data = await self.check_by_id_profile(user_id)
@@ -72,6 +72,7 @@ class ProfileRepository:
     ) -> None:
         data = await self.check_by_id_profile(user_id)
         data.instagram_url = instagram_url
+
 
 
     async def edit_linkedin_url(

@@ -30,7 +30,10 @@ class StatisticsRepository:
 
     async def add_application(self, application: str, id: int):
         await self.get_or_create_stats(id)
-        app = Application(application=application)
+        app = Application(
+            user_id=id,
+            application=application
+        )
         self.db.add(app)
         await self.db.commit()
         return app
@@ -47,18 +50,18 @@ class StatisticsRepository:
         return profile_view
 
 
-    async def get_profile_viewer(self, user_id: int):
+    async def get_profile_viewer(self, user_id: int) -> list[ProfileViewed] | list:
+        result = await self.db.execute(select(ProfileViewed).where(ProfileViewed.user_id == user_id))
+        return result.scalars().all()
+
+
+    async def get_profile_viewed(self, user_id: int) -> list[ProfileViewed] | list:
         result = await self.db.execute(select(ProfileViewed).where(ProfileViewed.user_profile_id == user_id))
-        return result.scalar_one_or_none()
+        return result.scalars().all()
 
 
-    async def get_profile_viewed(self, user_id: int):
-        result = await self.db.execute(select(ProfileViewed).where(ProfileViewed.viewed_user == user_id))
-        return result.scalar_one_or_none()
-
-
-    async def get_application(self, user_id: int): 
-        result = await self.db.execute(select(Application.user_id == user_id))
+    async def get_application(self, user_id: int) -> list[Application]: 
+        result = await self.db.execute(select(Application).where(Application.user_id == user_id))
         return result.scalars().all()
 
 
