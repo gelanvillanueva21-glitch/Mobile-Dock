@@ -1,12 +1,14 @@
 
 
+
+import json
 import logging
-from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Form
 from fastapi.staticfiles import StaticFiles
 from typing import Annotated
 from pydantic import Field
 
-from app.schemas.profile import EditProfile
+from app.schemas.profile import EditProfile, SocialMedia
 from app.services.profile_service import ProfileService
 from app.utilities.deps import get_profile_service, UserDependency
 from app.utilities.data_url import save_avatar_file
@@ -18,18 +20,29 @@ router = APIRouter(prefix='/profile', tags=['profile'])
 
 @router.post("/change_profile") 
 async def edit_profile(
-    data: EditProfile,
     user: UserDependency,
-    service: Annotated[ProfileService, Depends(get_profile_service)]
+    service: Annotated[ProfileService, Depends(get_profile_service)],
+    full_name: Annotated[str | None, Form(...)] = None,
+    about_me: Annotated[str | None, Form(...)] = None,
+    avatar_url: Annotated[UploadFile | None, File()] = None,
+    social_media: Annotated[str, Form(...)] = "",
 ):
     try:
-        await service.change_full_name(data.full_name, user)
-        await service.edit_social_media(data.social_media, user.id)
-        avatar_url = save_avatar_file(data.avatar_url)
+        social_media = SocialMedia.model_validate(json.loads(social_media))
+        print("He")
+        await service.change_full_name(full_name, user)
+        print("Hel")
+        await service.edit_social_media(social_media, user.id)
+        print("Hello")
+        avatar_url = save_avatar_file(avatar_url)
+        print("Helllo wo")
         await service.edit_avatar(avatar_url, user.id)
-        await service.edit_or_change_description(data.about_me, user.id)
+        print("Hello world")
+        await service.edit_or_change_description(about_me, user.id)
+        print("Hello world!")
         return { "status": "success" }
     except ValueError:
+        logger("Failed to change.")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to change profile."
