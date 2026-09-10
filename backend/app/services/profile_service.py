@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database.models.users import User
 from app.database.models.profile import Profile
 from app.schemas.profile import SocialMedia
+from app.utilities.deps import UserRepoDependency
 from app.repositories.profile import ProfileRepository
 
 
@@ -14,6 +15,17 @@ class ProfileService:
         ):
         self.db = db
         self.profile_repo = profile_repo
+
+
+    async def get_user_profile_by_id(self, user_id: int, user: UserRepoDependency):
+        result = await user.get_by_id(user_id)
+        if not result:
+            raise ValueError()
+        data = await self.profile_repo.get_or_create_profile(result.id)
+        return {
+            "id": result.id,
+            "full_name": result.full_name,
+        }
 
 
     async def get_profile(

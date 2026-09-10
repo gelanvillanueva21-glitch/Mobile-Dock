@@ -8,9 +8,9 @@ from fastapi.staticfiles import StaticFiles
 from typing import Annotated
 from pydantic import Field
 
-from app.schemas.profile import EditProfile, SocialMedia
+from app.schemas.profile import SocialMedia, ProfileResponse
 from app.services.profile_service import ProfileService
-from app.utilities.deps import get_profile_service, UserDependency
+from app.utilities.deps import get_profile_service, UserDependency, ProfileRepoDependency
 from app.utilities.data_url import save_avatar_file
 
 
@@ -92,6 +92,27 @@ async def search_profile(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to fetch user"
+        )
+
+
+@router.get("/{user_id`}", response_model=ProfileResponse)
+async def get_user_profile(
+    user_id: int,
+    service: Annotated[ProfileService, Depends(get_profile_service)]
+):
+    try:
+        pass
+    
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"user {user_id} does not exist."
+        )
+    except Exception as e:
+        logger.exception(f"Error at [get User Profile]: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch user {user_id}"
         )
 
 
