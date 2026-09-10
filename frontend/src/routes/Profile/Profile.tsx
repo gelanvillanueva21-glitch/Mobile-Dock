@@ -17,7 +17,9 @@ import { ErrorWindow } from "../../components/ErrorWindow";
 import { EditProfile } from "../../layouts/Profile/EditProfile";
 
 
-
+export function onClickProfile() {
+    
+}
 
 
 export function Profile() {

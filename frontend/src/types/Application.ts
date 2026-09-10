@@ -1,43 +1,44 @@
 
 
-import { Chess } from "../routes/Chess/chess";
-import { Messenger } from "../routes/Messenger/messenger";
-import { FlappyBird } from "../routes/FlappyBird/flappybird";
-import { Setting } from "../routes/Setting_/setting";
-import { Profile } from "../routes/Profile/Profile";
+
+import chessIcon from "../assets/icon/chess-1218-svgrepo-com.svg";
+import birdIcon from "../assets/icon/bird.jpg";
+import messageIcon from "../assets/icon/messenger-svgrepo-com.svg";
+import profileIcon from "../assets/icon/profile-svgrepo-com.svg";
+import settingIcon from "../assets/icon/settings-2-svgrepo-com.svg";
 
 
 
 export const Application = [
     {
         name: "Chess",
-        icon: "",
+        icon: chessIcon,
         alt: "Chess Icon",
-        onClick: Chess
+        url: "/chess"
     },
     {
         name: "Messenger",
-        icon: "",
+        icon: messageIcon,
         alt: "Messenger Icon",
-        onClick: Messenger
+        url: "/messenger"
     },
     {
         name: "Flappy Bird",
-        icon: "",
+        icon: birdIcon,
         alt: "Flappy Bird Icon",
-        onClick: FlappyBird
+        url: "/flappybird"
     },
     {
         name: "Settings",
-        icon: "",
+        icon: settingIcon,
         alt: "Settings Icon",
-        onClick: Setting
+        url: "/settings"
     },
     {
         name: "Profile",
-        icon: "",
+        icon: profileIcon,
         alt: "Settings Icon",
-        onClick: Profile
+        url: "/profile"
     }
 ]
 

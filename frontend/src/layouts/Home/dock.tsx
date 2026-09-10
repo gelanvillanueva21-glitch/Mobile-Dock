@@ -26,7 +26,7 @@ export function DockSystem() {
                 alt="Home"
             />
             <IconButton 
-                onClick={() => navigate("settings")}
+                onClick={() => navigate("/settings")}
                 context="Settings"
                 src={settingIcon}
                 alt="Settings"
