@@ -95,14 +95,14 @@ async def search_profile(
         )
 
 
-@router.get("/{user_id`}", response_model=ProfileResponse)
+@router.get("/{user_id}", response_model=ProfileResponse)
 async def get_user_profile(
     user_id: int,
     service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
-        pass
-    
+        result = await service.get_user_profile_by_id(user_id)
+        return result
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
