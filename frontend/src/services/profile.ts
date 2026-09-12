@@ -9,6 +9,11 @@ export function getProfile(): Promise<ProfileInfo> {
 }
 
 
+export function getProfileById(userId: number): Promise<ProfileInfo> {
+    return ApiRequest(`profile/${userId}`);
+}
+
+
 export function searchProfile(name: string): Promise<ProfileInfo[]> {
     return ApiRequest(`profile/${name}`);
 }

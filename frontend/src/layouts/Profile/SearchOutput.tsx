@@ -1,17 +1,24 @@
 
 
+import { useNavigate } from "react-router-dom";
 import guestIcon from "../../assets/icon/guest-profile.svg";
 
 interface OutputProps {
     profile: string | null;
     fullName: string | "guest";
     description: string;
+    id: number;
 }
 
 
-export function UsersOutPut({ profile, fullName, description }: OutputProps) {
+export function UsersOutPut({ profile, fullName, description, id }: OutputProps) {
+    const navigate = useNavigate();
+
     return (
-        <button className="users-profile-buttons">
+        <button 
+            className="users-profile-buttons"
+            onClick={() => navigate(`/profile/${id}`)}
+        >
             <img 
                 src={profile? `http://127.0.0.1:8000/avatars/${profile}` : guestIcon} 
                 alt="Profile" 

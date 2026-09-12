@@ -76,6 +76,7 @@ export function SearchUser() {
                                             profile={ prof.avatar_url? prof.avatar_url : null }
                                             fullName={prof.full_name? prof.full_name : "guest"}
                                             description={prof.about_me}
+                                            id={prof.id}
                                                 />
                                         </li> 
                                     )))}
