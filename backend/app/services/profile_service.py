@@ -21,7 +21,7 @@ class ProfileService:
         result = await user_repo.get_by_id(user_id)
         if not result:
             raise ValueError()
-        data = await self.profile_repo.get_or_create_profile(result.id)
+        data = await self.profile_repo.get_or_create_profile(result)
         return {
             "id": result.id,
             "full_name": result.full_name,

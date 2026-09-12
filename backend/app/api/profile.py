@@ -74,27 +74,6 @@ async def get_profile(
         )
 
 
-@router.get("/{profile_name}")
-async def search_profile(
-    profile_name: str,
-    profile_service: Annotated[ProfileService, Depends(get_profile_service)]
-):
-    try:
-        result = await profile_service.search_profile(profile_name)
-        return result
-    except ValueError:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    except Exception as e:
-        logger.exception(f"Error at [get Profile]: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to fetch user"
-        )
-
-
 @router.get("/{user_id}", response_model=ProfileResponse)
 async def get_user_profile(
     user_id: int,
@@ -113,6 +92,27 @@ async def get_user_profile(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch user {user_id}"
+        )
+
+
+@router.get("/search/{profile_name}")
+async def search_profile(
+    profile_name: str,
+    profile_service: Annotated[ProfileService, Depends(get_profile_service)]
+):
+    try:
+        result = await profile_service.search_profile(profile_name)
+        return result
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    except Exception as e:
+        logger.exception(f"Error at [get Profile]: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to fetch user"
         )
 
 

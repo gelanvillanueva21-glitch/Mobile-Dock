@@ -15,7 +15,7 @@ export function getProfileById(userId: number): Promise<ProfileInfo> {
 
 
 export function searchProfile(name: string): Promise<ProfileInfo[]> {
-    return ApiRequest(`profile/${name}`);
+    return ApiRequest(`profile/search/${name}`);
 }
 
 

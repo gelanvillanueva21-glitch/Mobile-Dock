@@ -108,6 +108,161 @@
     animation: skeleton-pulse 1.4s ease-in-out infinite;
 }
 
+.profile-error-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 420px;
+    max-width: calc(100vw - 40px);
+
+    padding: 40px;
+
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.18),
+        0 5px 15px rgba(0, 0, 0, 0.08);
+
+    text-align: center;
+
+    z-index: 100;
+}
+
+
+/* Close button */
+
+.profile-error-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #777;
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.profile-error-close:hover {
+    background: #f1f1f1;
+    color: #111;
+}
+
+
+/* Error icon */
+
+.profile-error-icon {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid #222;
+    border-radius: 50%;
+
+    color: #222;
+
+    font-size: 28px;
+    font-weight: 700;
+}
+
+
+/* Title */
+
+.profile-error-title {
+    margin: 0;
+
+    color: #111;
+
+    font-size: 22px;
+    font-weight: 600;
+}
+
+
+/* Message */
+
+.profile-error-message {
+    max-width: 330px;
+
+    margin: 12px auto 0;
+
+    color: #777;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* Retry button */
+
+.profile-error-retry {
+    margin-top: 26px;
+
+    padding: 11px 28px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #111;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.1s ease;
+}
+
+.profile-error-retry:hover {
+    background: #333;
+}
+
+.profile-error-retry:active {
+    transform: scale(0.97);
+}
+
+
+/* Mobile */
+
+@media (max-width: 500px) {
+    .profile-error-dialog {
+        padding: 35px 25px;
+    }
+
+    .profile-error-title {
+        font-size: 20px;
+    }
+}
+
 @keyframes skeleton-pulse {
     0% {
         opacity: 0.45;

@@ -16,6 +16,7 @@ export interface LoginPayload{
 
 
 export interface UserInfo{
+    id: number;
     fullName: string | null;
     email: string;
     createdAt: string;

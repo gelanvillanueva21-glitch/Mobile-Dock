@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { UsersOutPut } from "./SearchOutput";
 import { searchProfile } from "../../services/profile";
 import type { ProfileInfo } from "../../types/Profile";
+import { useAuth } from "../../utilities/AuthProvider";
 
 
 export function SearchUser() {
@@ -11,6 +12,8 @@ export function SearchUser() {
     const [profile, setProfile] = useState<ProfileInfo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showResult, setShowResult] = useState(false);
+
+    const { user } = useAuth();
 
 
     useEffect(() => {
@@ -67,18 +70,20 @@ export function SearchUser() {
                             <div className={showResult? "search-result-box visible" : "search-result-box"}>
                                 <ul className={showResult? "search-result-output visible" : "search-result-output"}>
                                     {profile.length > 0 && 
-                                        (profile.map((prof) => (
-                                        <li
-                                            key={prof.id}
-                                            className="users-content"
-                                        >
-                                            <UsersOutPut
-                                            profile={ prof.avatar_url? prof.avatar_url : null }
-                                            fullName={prof.full_name? prof.full_name : "guest"}
-                                            description={prof.about_me}
-                                            id={prof.id}
-                                                />
-                                        </li> 
+                                        (profile
+                                            .filter((prof) => prof.id !== user?.id)
+                                            .map((prof) => (
+                                                <li
+                                                    key={prof.id}
+                                                    className="users-content"
+                                                >
+                                                    <UsersOutPut
+                                                        profile={ prof.avatar_url? prof.avatar_url : null }
+                                                        fullName={prof.full_name? prof.full_name : "guest"}
+                                                        description={prof.about_me}
+                                                        id={prof.id}
+                                                    />
+                                                </li> 
                                     )))}
                                 </ul>
                             </div>
