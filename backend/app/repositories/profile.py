@@ -34,7 +34,15 @@ class ProfileRepository:
         self,
         profile_name: str
     ) -> list[User]:
-        result = await self.db.execute(select(User).where(User.full_name == profile_name))
+
+        # 1. Escape SQL wildcard characters so '%' and '_' are matched literally
+        safe_name = profile_name.replace("%", r"\%").replace("_", r"\_")
+        result = await self.db.execute(
+            select(User)
+            .where(User.full_name.ilike(f"{safe_name}%"))
+            .order_by(User.full_name.asc())
+            .limit(100)
+        )
         return result.scalars().all()
 
 

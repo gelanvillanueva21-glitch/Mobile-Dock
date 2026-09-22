@@ -1,7 +1,7 @@
 
 
 from datetime import datetime
-from sqlalchemy import String, DateTime, func
+from sqlalchemy import String, DateTime, func, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 from app.database.database import Base
@@ -41,6 +41,14 @@ class User(Base):
     stats: Mapped["Statistics"] = relationship(
         "Statistics",
         back_populates="stats_owner"
+    )
+
+    __table_args__ = (
+        Index(
+            "ix_users_full_name_prefix",
+            "full_name",
+            postgresql_ops={"full_name": "varchar_pattern_ops"}
+        ),
     )
 
 

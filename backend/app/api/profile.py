@@ -29,17 +29,11 @@ async def edit_profile(
 ):
     try:
         social_media = SocialMedia.model_validate(json.loads(social_media))
-        print("He")
         await service.change_full_name(full_name, user)
-        print("Hel")
         await service.edit_social_media(social_media, user.id)
-        print("Hello")
         avatar_url = save_avatar_file(avatar_url)
-        print("Helllo wo")
         await service.edit_avatar(avatar_url, user.id)
-        print("Hello world")
         await service.edit_or_change_description(about_me, user.id)
-        print("Hello world!")
         return { "status": "success" }
     except ValueError:
         logger("Failed to change.")
@@ -63,7 +57,6 @@ async def get_profile(
     profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
     try:
-        print("Profile")
         result = await profile_service.get_profile(user)
         return result
     except Exception as e:

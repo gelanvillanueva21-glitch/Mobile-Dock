@@ -14,7 +14,7 @@ class SocialMedia(BaseModel):
 
 class EditProfile(BaseModel):
     full_name: str | None = None
-    avatar_url: UploadFile | None = None
+    avatar_url: str | None = None
     about_me: str | None = None
     social_media: SocialMedia
 
