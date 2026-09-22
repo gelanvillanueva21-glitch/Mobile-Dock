@@ -16,5 +16,47 @@ body {
 }
 
 
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 50;
 
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 9px;
+
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.home-button img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.home-button:hover {
+    background: #f7f7f7;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.home-button:active {
+    transform: scale(0.94);
+}
 

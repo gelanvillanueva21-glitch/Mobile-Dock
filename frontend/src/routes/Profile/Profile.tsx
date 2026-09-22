@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../utilities/AuthProvider";
 import { ErrorWindow } from "../../components/ErrorWindow";
 import { EditProfile } from "../../layouts/Profile/EditProfile";
+import { HomeButton } from "../../components/HomeButton";
 
 
 export function onClickProfile() {
@@ -39,6 +40,7 @@ export function Profile() {
 
     return (
         <main className="profile-section">
+            <HomeButton/>
 
             {error && errorWindow? (
                 <ErrorWindow  onClose={onCloseHandle} onTryAgain={refetch}/>

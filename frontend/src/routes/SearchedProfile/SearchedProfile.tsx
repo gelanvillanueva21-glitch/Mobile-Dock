@@ -10,6 +10,7 @@ import guestIcon from "../../assets/icon/guest-profile.svg";
 import { UserDescription } from "../../layouts/Profile/Description";
 import { SocialMediaButton } from "../../layouts/Profile/SocialMedia";
 import { useState } from "react";
+import { HomeButton } from "../../components/HomeButton";
 
 
 interface ErrorWindowProps{
@@ -74,6 +75,7 @@ export function SearchedProfile() {
     return (
         <>
             <main className="relative min-h-screen">
+                <HomeButton/>
                 {isLoading ? (
                     <div className="mx-auto flex max-w-3xl animate-pulse flex-col items-center gap-6 p-8">
                         <div className="h-24 w-24 rounded-full bg-gray-200" />
