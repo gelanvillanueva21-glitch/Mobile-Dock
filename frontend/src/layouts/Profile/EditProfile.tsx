@@ -14,7 +14,7 @@ interface Props{
 }
 
 
-export function EditProfile({ profile, onClose }: Props) {
+export function EditProfile({ profile, onClose}: Props) {
     const [fullName, setFullName] = useState("");
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
     const [aboutMe, setAboutMe] = useState( profile?.about_me? profile.about_me : "");
@@ -44,7 +44,6 @@ export function EditProfile({ profile, onClose }: Props) {
         });
 
     function clickHandle() {
-        console.log("Clicked!")
         setIsLoading(true);
         const data = {
             full_name: fullName || null,
@@ -56,7 +55,7 @@ export function EditProfile({ profile, onClose }: Props) {
                 linkedin_url: linkedinUrl || null
             }
         };
-        mutation.mutate(data)
+        mutation.mutate(data);
         return;
     }
 

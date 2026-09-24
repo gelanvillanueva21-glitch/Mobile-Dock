@@ -28,6 +28,7 @@ export function Profile() {
     const [editProfile, setEditProfile] = useState(false);
 
     const { user } = useAuth();
+
     const { data, isLoading, error, refetch } = useQuery({
         queryKey: ["profile"],
         queryFn: getProfile,
@@ -60,7 +61,10 @@ export function Profile() {
                             </div>
                         </div>
                     ) : editProfile? (
-                        <EditProfile profile={data} onClose={() => setEditProfile(false)}/>
+                        <EditProfile 
+                            profile={data} 
+                            onClose={() => setEditProfile(false)}
+                        />
                     ) : (
                         <div className="profile-box">
                             <div className="flex items-center gap-2">

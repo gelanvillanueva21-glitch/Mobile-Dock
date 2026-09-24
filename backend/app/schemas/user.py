@@ -5,7 +5,6 @@ from typing import Annotated
 
 
 class UserBase(BaseModel):
-    id: int
     email: EmailStr
     full_name: Annotated[str, Field(
         min_length=5, 
