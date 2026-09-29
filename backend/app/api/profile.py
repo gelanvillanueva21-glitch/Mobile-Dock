@@ -24,15 +24,17 @@ async def edit_profile(
     service: Annotated[ProfileService, Depends(get_profile_service)],
     full_name: Annotated[str | None, Form(...)] = None,
     about_me: Annotated[str | None, Form(...)] = None,
-    avatar_url: Annotated[UploadFile | None, File()] = None,
+    avatar_url: Annotated[UploadFile | str | None, File()] = None,
     social_media: Annotated[str, Form(...)] = "",
 ):
     try:
         social_media = SocialMedia.model_validate(json.loads(social_media))
         await service.change_full_name(full_name, user)
         await service.edit_social_media(social_media, user.id)
-        avatar_url = save_avatar_file(avatar_url)
-        await service.edit_avatar(avatar_url, user.id)
+        if not isinstance(avatar_url, str):
+            print("Hello World!")
+            avatar_url = save_avatar_file(avatar_url)
+            await service.edit_avatar(avatar_url, user.id)
         await service.edit_or_change_description(about_me, user.id)
         return { "status": "success" }
     except ValueError:

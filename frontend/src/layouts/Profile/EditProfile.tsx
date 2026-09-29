@@ -8,13 +8,15 @@ import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { editProfile } from "../../services/profile";
 
+
 interface Props{
     profile?: ProfileInfo;
     onClose: () => void;
+    refetch: () => void;
 }
 
 
-export function EditProfile({ profile, onClose}: Props) {
+export function EditProfile({ profile, onClose, refetch}: Props) {
     const [fullName, setFullName] = useState("");
     const [profilePicture, setProfilePicture] = useState<File | null>(null);
     const [aboutMe, setAboutMe] = useState( profile?.about_me? profile.about_me : "");
@@ -24,12 +26,13 @@ export function EditProfile({ profile, onClose}: Props) {
     const [clickEdit, setClickEdit] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const profilePictureUrl = profilePicture
         ? URL.createObjectURL(profilePicture)
-        : profile?.avatar_url ?? guestIcon;
+        : null;
+    
     const mutation = useMutation({
             mutationFn: editProfile,
             onSuccess: () => {
@@ -43,19 +46,20 @@ export function EditProfile({ profile, onClose}: Props) {
             },
         });
 
-    function clickHandle() {
+    async function clickHandle() {
         setIsLoading(true);
         const data = {
-            full_name: fullName || null,
-            avatar_url: profilePicture,
+            full_name: fullName || profile?.full_name || null,
+            avatar_url: profilePicture || profile?.avatar_url || null,
             about_me: aboutMe || null,
             social_media: { 
-                facebook_url: facebookUrl || null,
-                instagram_url: instagramUrl || null,
-                linkedin_url: linkedinUrl || null
+                facebook_url: `https://facebook.com/${facebookUrl}` || null,
+                instagram_url: `https://instagram.com/${instagramUrl}` || null,
+                linkedin_url: `https://linkedin.com/${linkedinUrl}`|| null
             }
         };
         mutation.mutate(data);
+        await refetch();
         return;
     }
 
@@ -64,7 +68,9 @@ export function EditProfile({ profile, onClose}: Props) {
             <div className="flex items-center gap-4">
                 <div className="relative h-28 w-28">
                     <img 
-                        src={profilePictureUrl}
+                        src={profile?.avatar_url ? 
+                            `http://127.0.0.1:8000/avatars/${profile?.avatar_url}` :
+                            profilePictureUrl || guestIcon} 
                         alt="Profile"
                         className="h-full w-full rounded-full border border-gray-200 object-cover" 
                     />

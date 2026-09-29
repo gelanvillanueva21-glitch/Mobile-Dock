@@ -28,7 +28,6 @@ def save_avatar_file(avatar_file):
             shutil.copyfileobj(avatar_file.file, file)
     except Exception:
         raise ValueError()
-    print(str(file_path))
     return str(file_path)
 
 

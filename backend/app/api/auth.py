@@ -83,9 +83,7 @@ async def change_password(
     user_service: Annotated[UserService, Depends(get_user_service)]
 ):
     try:
-        print("Hello Alton!")
         await user_service.change_password(data.new_password, user.id)
-        print("Changed Password!")  
         return { "status": "success" }
     except ValueError:
         raise HTTPException(

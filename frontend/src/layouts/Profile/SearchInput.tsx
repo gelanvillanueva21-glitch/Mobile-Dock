@@ -71,19 +71,20 @@ export function SearchUser() {
                                 <ul className={showResult? "search-result-output visible" : "search-result-output"}>
                                     {profile.length > 0 && 
                                         (profile
-                                            .filter((prof) => prof.id !== user?.id)
                                             .map((prof) => (
-                                                <li
-                                                    key={prof.id}
-                                                    className="users-content"
-                                                >
-                                                    <UsersOutPut
-                                                        profile={ prof.avatar_url? prof.avatar_url : null }
-                                                        fullName={prof.full_name? prof.full_name : "guest"}
-                                                        description={prof.about_me}
-                                                        id={prof.id}
-                                                    />
-                                                </li> 
+                                                (prof.id != user?.id && 
+                                                    <li
+                                                        key={prof.id}
+                                                        className="users-content"
+                                                    >
+                                                        <UsersOutPut
+                                                            profile={ prof.avatar_url? prof.avatar_url : null }
+                                                            fullName={prof.full_name? prof.full_name : "guest"}
+                                                            description={prof.about_me}
+                                                            id={prof.id}
+                                                        />
+                                                    </li> 
+                                                )
                                     )))}
                                 </ul>
                             </div>

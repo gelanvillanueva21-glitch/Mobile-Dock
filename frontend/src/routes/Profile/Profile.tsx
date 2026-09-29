@@ -64,6 +64,7 @@ export function Profile() {
                         <EditProfile 
                             profile={data} 
                             onClose={() => setEditProfile(false)}
+                            refetch={refetch}
                         />
                     ) : (
                         <div className="profile-box">

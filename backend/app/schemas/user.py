@@ -6,10 +6,10 @@ from typing import Annotated
 
 class UserBase(BaseModel):
     email: EmailStr
-    full_name: Annotated[str, Field(
+    full_name: Annotated[str | None, Field(
         min_length=5, 
         max_length=255,
-        default="guest")]
+        default="guest")] = None
 
 
 class UserCreate(UserBase):

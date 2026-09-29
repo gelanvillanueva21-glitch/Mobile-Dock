@@ -13,7 +13,7 @@ export interface ProfileInfo{
 
 export interface ChangeProfile{
     full_name: string | null;
-    avatar_url: File | null;
+    avatar_url: File | string | null;
     about_me: string | null;
     social_media: SocialMedia;
 }
