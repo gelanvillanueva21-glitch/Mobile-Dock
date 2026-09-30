@@ -9,6 +9,7 @@ from app.database.database import Base
 if TYPE_CHECKING:
     from app.database.models.profile import Profile
     from app.database.models.stats import Statistics
+    from app.database.models.message import Messages
 
 
 class User(Base):
@@ -41,6 +42,10 @@ class User(Base):
     stats: Mapped["Statistics"] = relationship(
         "Statistics",
         back_populates="stats_owner"
+    )
+    sent_message: Mapped[list["Messages"]] = relationship(
+        "Messages",
+        back_populates="sender"
     )
 
     __table_args__ = (
