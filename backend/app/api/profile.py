@@ -10,7 +10,7 @@ from pydantic import Field
 
 from app.schemas.profile import SocialMedia, ProfileResponse
 from app.services.profile_service import ProfileService
-from app.utilities.deps import get_profile_service, UserDependency, ProfileRepoDependency
+from app.utilities.deps import get_profile_service, UserDependency, ProfileRepoDependency, DatabaseDependency
 from app.utilities.data_url import save_avatar_file
 
 
@@ -20,6 +20,7 @@ router = APIRouter(prefix='/profile', tags=['profile'])
 
 @router.post("/change_profile") 
 async def edit_profile(
+    db: DatabaseDependency,
     user: UserDependency,
     service: Annotated[ProfileService, Depends(get_profile_service)],
     full_name: Annotated[str | None, Form(...)] = None,
@@ -38,12 +39,14 @@ async def edit_profile(
         await service.edit_or_change_description(about_me, user.id)
         return { "status": "success" }
     except ValueError:
+        await db.rollback()
         logger("Failed to change.")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to change profile."
         )
     except Exception:
+        await db.rollback()
         logger.error("Something error occured.")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -55,6 +58,7 @@ async def edit_profile(
 
 @router.get("")
 async def get_profile(
+    db: DatabaseDependency,
     user: UserDependency,
     profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
@@ -63,6 +67,7 @@ async def get_profile(
         return result
     except Exception as e:
         logger.exception(f"Error at [get Profile]: {e}")
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to fetch profile"
@@ -71,6 +76,7 @@ async def get_profile(
 
 @router.get("/{user_id}", response_model=ProfileResponse)
 async def get_user_profile(
+    db: DatabaseDependency,
     user_id: int,
     service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
@@ -78,11 +84,13 @@ async def get_user_profile(
         result = await service.get_user_profile_by_id(user_id)
         return result
     except ValueError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"user {user_id} does not exist."
         )
     except Exception as e:
+        await db.rollback()
         logger.exception(f"Error at [get User Profile]: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -92,6 +100,7 @@ async def get_user_profile(
 
 @router.get("/search/{profile_name}")
 async def search_profile(
+    db: DatabaseDependency,
     profile_name: str,
     profile_service: Annotated[ProfileService, Depends(get_profile_service)]
 ):
@@ -99,11 +108,13 @@ async def search_profile(
         result = await profile_service.search_profile(profile_name)
         return result
     except ValueError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found"
         )
     except Exception as e:
+        await db.rollback()
         logger.exception(f"Error at [get Profile]: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

@@ -6,6 +6,26 @@ from pathlib import Path
 
 
 def save_avatar_file(avatar_file):
+    suffix_list = [
+        ".jpg", 
+        ".jpeg", 
+        ".png", 
+        ".webp", 
+        ".gif", 
+        ".bmp", 
+        ".tiff", 
+        ".svg", 
+        ".ico", 
+        ".heic", 
+        ".heif", 
+        ".avif", 
+        ".jfif", 
+        ".pjpeg", 
+        ".pjp", 
+        ".apng", 
+        ".cur", 
+        ".tga"
+    ]
 
     if not avatar_file:
         return None
@@ -13,7 +33,8 @@ def save_avatar_file(avatar_file):
     DATA_URL = Path("/app/app/data")
     DATA_URL.mkdir(parents=True, exist_ok=True)
     extension = Path(avatar_file.filename).suffix.lower()
-
+    if extension not in suffix_list:
+        raise ValueError(f"Invalid file extension: {extension}. Allowed extensions are: {', '.join(suffix_list)}")
 
     while True:
         random_string = secrets.token_hex(6)

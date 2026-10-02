@@ -3,7 +3,7 @@ import logging
 from fastapi import APIRouter, status, HTTPException, Body
 from typing import Annotated
 from pydantic import Field
-from app.utilities.deps import StatsDependency, UserDependency, UserRepoDependency
+from app.utilities.deps import StatsDependency, UserDependency, UserRepoDependency, DatabaseDependency
 
 
 router = APIRouter(prefix="/stats", tags=["stats"])
@@ -18,7 +18,8 @@ logger = logging.getLogger(__name__)
 async def open_application(
     application: Annotated[str, Body(...)],
     user: UserDependency,
-    repo: StatsDependency
+    repo: StatsDependency,
+    db: DatabaseDependency
 ): 
     APPLICATION = {'Chess', 'Cloud Gallery', 'Messenger'}
     try:
@@ -30,16 +31,19 @@ async def open_application(
             raise ValueError()
         return { "status": "success" }
     except AttributeError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Application not found."
         )
     except ValueError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to add application"
         )
     except Exception:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Something error occured. Failed to execute."
@@ -51,7 +55,8 @@ async def view_profile(
     profile_id: Annotated[int, Body(...)],
     user: UserDependency,
     repo: StatsDependency,
-    user_repo: UserRepoDependency
+    user_repo: UserRepoDependency,
+    db: DatabaseDependency
 ):
     try:
         result = await user_repo.get_by_id(profile_id)
@@ -62,11 +67,13 @@ async def view_profile(
             raise ValueError()
         return { "status": "success" }
     except ValueError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to view profile or profile not exist."
         )
     except Exception:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Something error occured."
@@ -74,7 +81,11 @@ async def view_profile(
 
 
 @router.get("/")
-async def get_stats(user: UserDependency, repo: StatsDependency):
+async def get_stats(
+    user: UserDependency, 
+    repo: StatsDependency,
+    db: DatabaseDependency
+):
     try:
         data = await repo.get_or_create_stats(user.id)
         if not data:
@@ -89,11 +100,13 @@ async def get_stats(user: UserDependency, repo: StatsDependency):
             "profile_viewer": [prof.user_id for prof in profile_view]
         }
     except ValueError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Failed to fetch the data."
         )
     except Exception:
+        await db.rollback()
         logger.exception("Stats error.")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

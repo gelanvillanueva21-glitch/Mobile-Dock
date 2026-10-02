@@ -43,9 +43,15 @@ class User(Base):
         "Statistics",
         back_populates="stats_owner"
     )
-    sent_message: Mapped[list["Messages"]] = relationship(
+    sent_messages: Mapped[list["Messages"]] = relationship(
         "Messages",
-        back_populates="sender"
+        back_populates="sender",
+        foreign_keys="Messages.sender_id"
+    )
+    received_messages: Mapped[list["Messages"]] = relationship(
+        "Messages",
+        back_populates="receiver",
+        foreign_keys="Messages.receiver_id"
     )
 
     __table_args__ = (

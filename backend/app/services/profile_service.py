@@ -43,7 +43,6 @@ class ProfileService:
         await self.db.commit()
         print("return profile") 
         return {
-            "email": user.email,
             "full_name": user.full_name,
             "avatar_url": profile.avatar_url,
             "about_me": profile.about_me,
@@ -68,7 +67,6 @@ class ProfileService:
             profile = await self.profile_repo.check_by_id_profile(data.id)
             outputlist.append({
                 "id": data.id,
-                "email": data.email,
                 "full_name": data.full_name,
                 "avatar_url": profile.avatar_url,
                 "about_me": profile.about_me,

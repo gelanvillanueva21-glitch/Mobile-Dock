@@ -43,10 +43,10 @@ def create_access_token(data: dict[str | Any], expires_delta: timedelta | None =
     else:
         """
         This create an expiration date to store in JWT.
-        Extract the ACCESS_TOKEN_EXPIRE_HOURS to calculate
+        Extract the ACCESS_TOKEN_EXPIRE_MINUTES to calculate
         the expiration date
         """
-        expire = datetime.now(timezone.utc) + timedelta(hours=settings.ACCESS_TOKEN_EXPIRE_HOURS)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     # Stores the expiration to the encode var
     to_encode.update({"exp": expire})
     """

@@ -6,7 +6,7 @@ from typing import Annotated
 
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreate, UserLogin, UserResponse, ChangePassword
-from app.utilities.deps import get_user_repo, get_user_service, UserDependency
+from app.utilities.deps import get_user_repo, get_user_service, UserDependency, DatabaseDependency
 from app.config.security import verify_password, create_access_token
 from app.database.models.users import User
 
@@ -24,7 +24,8 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 )
 async def register(
     data: UserCreate,
-    service: Annotated[UserService, Depends(get_user_service)]
+    service: Annotated[UserService, Depends(get_user_service)],
+    db: DatabaseDependency
 ):
     try:
         print("Hello world")
@@ -32,11 +33,13 @@ async def register(
         print(result)
         return result
     except ValueError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Account email already exist"
         )
     except Exception:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to create account"
@@ -80,17 +83,20 @@ async def login(
 async def change_password(
     data: ChangePassword,
     user: UserDependency,
+    db: DatabaseDependency,
     user_service: Annotated[UserService, Depends(get_user_service)]
 ):
     try:
         await user_service.change_password(data.new_password, user.id)
         return { "status": "success" }
     except ValueError:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Password must not be the same to previous password."
         )
     except Exception:
+        await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to change password."

@@ -23,8 +23,7 @@ class Images(Base):
 
     owner: Mapped["Messages"] = relationship(
         "Messages",
-        back_populates="image_message",
-        cascade="all, delete-orphan"
+        back_populates="image_message"
     )
 
 

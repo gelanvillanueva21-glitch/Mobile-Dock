@@ -24,7 +24,9 @@ class MessageService:
             data.sender_id,
             data.receiver_id
         )
-
+        return [
+            
+        ]
 
     async def get_messages(
         self,

@@ -1,4 +1,6 @@
 
+from __future__ import annotations
+
 from datetime import datetime
 from sqlalchemy import String, ForeignKey, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -32,14 +34,12 @@ class Messages(Base):
     sender: Mapped[User] = relationship(
         "User",
         foreign_keys=[sender_id],
-        back_populates='sent_messaged',
-        cascade="all, delete-orphan"
+        back_populates="sent_messages"
     )
     receiver: Mapped[User] = relationship(
         "User",
         foreign_keys=receiver_id,
-        back_populates='received_messaged',
-        cascade="all, delete-orphan"
+        back_populates="received_messages"
     )
     image_message: Mapped[list["Images"]] = relationship(
         "Images",
